@@ -15,9 +15,9 @@ class SuiteRequest
     public function __construct(
         public readonly ?string $id,
         public readonly string $userId,
-        public readonly string $sourceId,
-        public readonly string $label,
-        public readonly array $tests,
+        public readonly ?string $sourceId,
+        public readonly ?string $label,
+        public readonly ?array $tests,
     ) {
     }
 }
