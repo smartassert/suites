@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\ArgumentResolver;
 
 use App\Request\CreateRequest;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
@@ -24,11 +25,8 @@ class CreateRequestResolver implements ArgumentValueResolverInterface
         if ($this->supports($request, $argument)) {
             $requestPayload = $request->request;
 
-            $sourceId = $requestPayload->get(CreateRequest::KEY_SOURCE_ID);
-            $sourceId = is_string($sourceId) ? $sourceId : null;
-
-            $label = $requestPayload->get(CreateRequest::KEY_LABEL);
-            $label = is_string($label) ? $label : null;
+            $sourceId = $this->getNonEmptyStringPropertyFromPayload($requestPayload, CreateRequest::KEY_SOURCE_ID);
+            $label = $this->getNonEmptyStringPropertyFromPayload($requestPayload, CreateRequest::KEY_LABEL);
 
             $requestTests = $requestPayload->all(CreateRequest::KEY_TESTS);
             $tests = null;
@@ -44,5 +42,21 @@ class CreateRequestResolver implements ArgumentValueResolverInterface
 
             yield new CreateRequest($sourceId, $label, $tests);
         }
+    }
+
+    private function getNonEmptyStringPropertyFromPayload(ParameterBag $payload, string $key): ?string
+    {
+        if (false === $payload->has($key)) {
+            return null;
+        }
+
+        $value = $payload->get($key);
+        if (!is_string($value)) {
+            return null;
+        }
+
+        $value = trim($value);
+
+        return '' === $value ? null : $value;
     }
 }
