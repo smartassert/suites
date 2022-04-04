@@ -20,6 +20,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
         $response = $this->applicationClient->makeCreateRequest([], $method);
 
         self::assertSame(405, $response->getStatusCode());
+        self::assertSame('', $response->getBody()->getContents());
     }
 
     /**
