@@ -77,8 +77,14 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
+    "hamcrest/hamcrest-php": {
+        "version": "v2.0.1"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "mockery/mockery": {
+        "version": "1.5.0"
     },
     "myclabs/deep-copy": {
         "version": "1.11.0"
@@ -109,6 +115,9 @@
     },
     "phpstan/phpstan": {
         "version": "1.5.2"
+    },
+    "phpstan/phpstan-mockery": {
+        "version": "1.0.0"
     },
     "phpstan/phpstan-phpunit": {
         "version": "1.1.0"
