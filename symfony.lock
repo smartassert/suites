@@ -77,8 +77,17 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
+    "guzzlehttp/psr7": {
+        "version": "2.2.1"
+    },
+    "hamcrest/hamcrest-php": {
+        "version": "v2.0.1"
+    },
     "laminas/laminas-code": {
         "version": "4.5.1"
+    },
+    "mockery/mockery": {
+        "version": "1.5.0"
     },
     "myclabs/deep-copy": {
         "version": "1.11.0"
@@ -109,6 +118,9 @@
     },
     "phpstan/phpstan": {
         "version": "1.5.2"
+    },
+    "phpstan/phpstan-mockery": {
+        "version": "1.0.0"
     },
     "phpstan/phpstan-phpunit": {
         "version": "1.1.0"
@@ -154,8 +166,20 @@
     "psr/event-dispatcher": {
         "version": "1.0.0"
     },
+    "psr/http-client": {
+        "version": "1.0.1"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "3.0.0"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
@@ -205,6 +229,12 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "smartassert/symfony-test-client": {
+        "version": "0.1"
+    },
+    "smartassert/yaml-file": {
+        "version": "4.0"
+    },
     "squizlabs/php_codesniffer": {
         "version": "3.6",
         "recipe": {
@@ -216,6 +246,9 @@
         "files": [
             "phpcs.xml.dist"
         ]
+    },
+    "symfony/browser-kit": {
+        "version": "v6.0.3"
     },
     "symfony/cache": {
         "version": "v6.0.6"
@@ -245,6 +278,9 @@
         "version": "v3.0.0"
     },
     "symfony/doctrine-bridge": {
+        "version": "v6.0.6"
+    },
+    "symfony/dom-crawler": {
         "version": "v6.0.6"
     },
     "symfony/dotenv": {
@@ -329,6 +365,9 @@
     "symfony/proxy-manager-bridge": {
         "version": "v6.0.6"
     },
+    "symfony/psr-http-message-bridge": {
+        "version": "v2.1.2"
+    },
     "symfony/routing": {
         "version": "6.0",
         "recipe": {
@@ -371,6 +410,9 @@
     },
     "webignition/object-reflector": {
         "version": "1.0"
+    },
+    "webignition/yaml-document-set-parser": {
+        "version": "2.0"
     },
     "webmozart/assert": {
         "version": "1.10.0"
