@@ -123,6 +123,27 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                     'error_state' => 'label/missing',
                 ],
             ],
+            'test paths invalid' => [
+                'payload' => [
+                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
+                    CreateRequest::KEY_LABEL => $validLabel,
+                    CreateRequest::KEY_TESTS => [
+                        'Valid/path.yaml',
+                        'Invalid/path.txt',
+                        'Invalid/path.js',
+                        'Valid/path.yml',
+                    ],
+                ],
+                'expectedResponseData' => [
+                    'error_state' => 'tests/invalid',
+                    'payload' => [
+                        'invalid_paths' => [
+                            'Invalid/path.txt',
+                            'Invalid/path.js',
+                        ],
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -189,14 +210,14 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                     CreateRequest::KEY_LABEL => 'non-empty value',
                     CreateRequest::KEY_TESTS => [
                         'Test/test1.yaml',
-                        'Test/test2.yaml',
+                        'Test/test2.yml',
                     ],
                 ],
                 'expectedSourceId' => $validSourceId,
                 'expectedLabel' => 'non-empty value',
                 'expectedTests' => [
                     'Test/test1.yaml',
-                    'Test/test2.yaml',
+                    'Test/test2.yml',
                 ],
             ],
         ];

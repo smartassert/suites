@@ -7,6 +7,8 @@ use App\Model\EntityId;
 use App\Repository\SuiteRepository;
 use App\Request\CreateRequest;
 use App\Response\ErrorResponse;
+use SmartAssert\YamlFile\Filename;
+use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,8 +17,11 @@ use Symfony\Component\Uid\Ulid;
 class SuiteController extends AbstractController
 {
     #[Route('/', name: 'create', methods: ['POST'])]
-    public function index(CreateRequest $request, SuiteRepository $repository): Response
-    {
+    public function index(
+        CreateRequest $request,
+        YamlFilenameValidator $yamlFilenameValidator,
+        SuiteRepository $repository
+    ): Response {
         // @todo: replace with injected user's id in #10
         $userId = EntityId::create();
 
@@ -39,11 +44,23 @@ class SuiteController extends AbstractController
 
         if (is_array($requestTests)) {
             $tests = [];
+            $invalidTests = [];
 
             foreach ($requestTests as $requestTest) {
-                if (is_string($requestTest) && '' !== trim($requestTest)) {
-                    $tests[] = trim($requestTest);
+                $requestTest = trim($requestTest);
+
+                $validation = $yamlFilenameValidator->validate(Filename::parse($requestTest));
+                if ($validation->isValid()) {
+                    $tests[] = $requestTest;
+                } else {
+                    $invalidTests[] = $requestTest;
                 }
+            }
+
+            if ([] !== $invalidTests) {
+                return new ErrorResponse('tests/invalid', [
+                    'invalid_paths' => $invalidTests,
+                ]);
             }
 
             if ([] === $tests) {

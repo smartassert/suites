@@ -232,6 +232,9 @@
     "smartassert/symfony-test-client": {
         "version": "0.1"
     },
+    "smartassert/yaml-file": {
+        "version": "4.0"
+    },
     "squizlabs/php_codesniffer": {
         "version": "3.6",
         "recipe": {
@@ -407,6 +410,9 @@
     },
     "webignition/object-reflector": {
         "version": "1.0"
+    },
+    "webignition/yaml-document-set-parser": {
+        "version": "2.0"
     },
     "webmozart/assert": {
         "version": "1.10.0"

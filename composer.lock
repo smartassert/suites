@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6858462db0a69b55e73ecdf3f92139d0",
+    "content-hash": "9782c72d8e2a5c489bd35d4d4ce9c7f3",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1712,6 +1712,58 @@
                 "source": "https://github.com/php-fig/log/tree/3.0.0"
             },
             "time": "2021-07-14T16:46:02+00:00"
+        },
+        {
+            "name": "smartassert/yaml-file",
+            "version": "4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/smartassert/yaml-file.git",
+                "reference": "759dc10f11bde192d82601c22185636167e04e30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/smartassert/yaml-file/zipball/759dc10f11bde192d82601c22185636167e04e30",
+                "reference": "759dc10f11bde192d82601c22185636167e04e30",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "symfony/yaml": "^6.0",
+                "webignition/yaml-document-set-parser": ">=2.0,<3"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.5",
+                "phpstan/extension-installer": "^1.1",
+                "phpstan/phpstan": "^1.4",
+                "phpstan/phpstan-mockery": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "dev-master#51335eb46b2b940b6c429643fe96f514d4a4e4a1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "SmartAssert\\YamlFile\\": "src/",
+                    "SmartAssert\\Tests\\YamlFile\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/smartassert/yaml-file",
+            "support": {
+                "issues": "https://github.com/smartassert/yaml-file/issues",
+                "source": "https://github.com/smartassert/yaml-file/tree/4.0"
+            },
+            "time": "2022-03-22T18:18:48+00:00"
         },
         {
             "name": "symfony/cache",
@@ -4325,6 +4377,58 @@
                 }
             ],
             "time": "2022-01-26T17:23:29+00:00"
+        },
+        {
+            "name": "webignition/yaml-document-set-parser",
+            "version": "2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/yaml-document-set-parser.git",
+                "reference": "2ef99fb12f9d608659a3d161971f6ef287ee4dea"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/yaml-document-set-parser/zipball/2ef99fb12f9d608659a3d161971f6ef287ee4dea",
+                "reference": "2ef99fb12f9d608659a3d161971f6ef287ee4dea",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.4",
+                "phpunit/phpunit": "^9.5",
+                "squizlabs/php_codesniffer": "^3.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\YamlDocumentSetParser\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "description": "Separate a collection of yaml documents into an array of yaml documents",
+            "homepage": "https://github.com/webignition/yaml-document-set-parser",
+            "keywords": [
+                "collection",
+                "parser",
+                "set",
+                "yaml"
+            ],
+            "support": {
+                "issues": "https://github.com/webignition/yaml-document-set-parser/issues",
+                "source": "https://github.com/webignition/yaml-document-set-parser/tree/2.0"
+            },
+            "time": "2022-03-18T16:55:27+00:00"
         }
     ],
     "packages-dev": [
