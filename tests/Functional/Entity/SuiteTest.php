@@ -38,9 +38,9 @@ class SuiteTest extends WebTestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param null|array<int, string> $tests
+     * @param array<int, string> $tests
      */
-    public function testCreate(string $userId, string $sourceId, string $label, ?array $tests): void
+    public function testCreate(string $userId, string $sourceId, string $label, array $tests): void
     {
         self::assertSame(0, $this->repository->count([]));
 
@@ -74,7 +74,7 @@ class SuiteTest extends WebTestCase
                 'userId' => $userIdNoTests,
                 'sourceId' => $sourceIdNoTests,
                 'label' => $labelNoTests,
-                'tests' => null,
+                'tests' => [],
             ],
             'has tests' => [
                 'userId' => $userIdHasTests,
