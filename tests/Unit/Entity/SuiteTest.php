@@ -47,6 +47,7 @@ class SuiteTest extends TestCase
                     'id' => ObjectReflector::getProperty($suiteNoTests, 'id'),
                     'source_id' => $sourceIdNoTests,
                     'label' => $labelNoTests,
+                    'tests' => [],
                 ],
             ],
             'has tests' => [

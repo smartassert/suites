@@ -25,15 +25,15 @@ class Suite implements \JsonSerializable
     private string $label;
 
     /**
-     * @var null|array<int, string>
+     * @var array<int, string>
      */
     #[ORM\Column(type: 'simple_array', nullable: true)]
-    private ?array $tests;
+    private array $tests;
 
     /**
-     * @param null|string[] $tests
+     * @param string[] $tests
      */
-    public function __construct(string $userId, string $sourceId, string $label, ?array $tests = null)
+    public function __construct(string $userId, string $sourceId, string $label, array $tests = [])
     {
         $this->id = EntityId::create();
         $this->userId = $userId;
@@ -57,9 +57,9 @@ class Suite implements \JsonSerializable
     }
 
     /**
-     * @param null|string[] $tests
+     * @param string[] $tests
      */
-    public function setTests(?array $tests): self
+    public function setTests(array $tests): self
     {
         $this->tests = $tests;
 
@@ -76,21 +76,16 @@ class Suite implements \JsonSerializable
      *     id: string,
      *     source_id: string,
      *     label: string,
-     *     tests?: array<int, string>
+     *     tests: array<int, string>
      * }
      */
     public function jsonSerialize(): array
     {
-        $data = [
+        return [
             'id' => $this->id,
             'source_id' => $this->sourceId,
             'label' => $this->label,
+            'tests' => $this->tests,
         ];
-
-        if (is_array($this->tests)) {
-            $data['tests'] = $this->tests;
-        }
-
-        return $data;
     }
 }

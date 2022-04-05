@@ -196,6 +196,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                     'id' => '#as-generated',
                     'source_id' => $validSourceId,
                     'label' => 'non-empty value',
+                    'tests' => [],
                 ],
             ],
             'no tests (not empty)' => [
@@ -208,6 +209,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                     'id' => '#as-generated',
                     'source_id' => $validSourceId,
                     'label' => 'non-empty value',
+                    'tests' => [],
                 ],
             ],
             'has tests' => [

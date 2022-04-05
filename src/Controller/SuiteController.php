@@ -40,10 +40,9 @@ class SuiteController extends AbstractController
         }
 
         $requestTests = $request->tests;
-        $tests = null;
+        $tests = [];
 
         if (is_array($requestTests)) {
-            $tests = [];
             $invalidTests = [];
 
             foreach ($requestTests as $requestTest) {
@@ -61,10 +60,6 @@ class SuiteController extends AbstractController
                 return new ErrorResponse('tests/invalid', [
                     'invalid_paths' => $invalidTests,
                 ]);
-            }
-
-            if ([] === $tests) {
-                $tests = null;
             }
         }
 
