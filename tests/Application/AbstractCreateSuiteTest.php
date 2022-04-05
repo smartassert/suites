@@ -151,30 +151,32 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
      * @dataProvider createSuccessDataProvider
      *
      * @param array<string, string> $payload
-     * @param null|string[]         $expectedTests
+     * @param array<mixed>          $expectedResponseData
      */
-    public function testCreateSuccess(
-        array $payload,
-        string $expectedSourceId,
-        string $expectedLabel,
-        ?array $expectedTests
-    ): void {
+    public function testCreateSuccess(array $payload, array $expectedResponseData): void
+    {
         $suiteRepository = self::getContainer()->get(SuiteRepository::class);
         \assert($suiteRepository instanceof SuiteRepository);
 
         self::assertSame(0, $suiteRepository->count([]));
 
         $response = $this->applicationClient->makeCreateRequest($payload);
-
         self::assertSame(200, $response->getStatusCode());
+        self::assertSame('application/json', $response->getHeaderLine('content-type'));
+
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
         self::assertSame(1, $suiteRepository->count([]));
 
         $suite = $suiteRepository->findAll()[0];
         self::assertInstanceOf(Suite::class, $suite);
 
-        self::assertSame($expectedSourceId, ObjectReflector::getProperty($suite, 'sourceId'));
-        self::assertSame($expectedLabel, ObjectReflector::getProperty($suite, 'label'));
-        self::assertSame($expectedTests, ObjectReflector::getProperty($suite, 'tests'));
+        $expectedResponseData['id'] = ObjectReflector::getProperty($suite, 'id');
+        self::assertSame($expectedResponseData, $responseData);
+
+        self::assertSame($expectedResponseData['source_id'], ObjectReflector::getProperty($suite, 'sourceId'));
+        self::assertSame($expectedResponseData['label'], ObjectReflector::getProperty($suite, 'label'));
+        self::assertSame($expectedResponseData['tests'] ?? null, ObjectReflector::getProperty($suite, 'tests'));
     }
 
     /**
@@ -190,9 +192,11 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                     CreateRequest::KEY_SOURCE_ID => $validSourceId,
                     CreateRequest::KEY_LABEL => 'non-empty value',
                 ],
-                'expectedSourceId' => $validSourceId,
-                'expectedLabel' => 'non-empty value',
-                'expectedTests' => null,
+                'expectedResponseData' => [
+                    'id' => '#as-generated',
+                    'source_id' => $validSourceId,
+                    'label' => 'non-empty value',
+                ],
             ],
             'no tests (not empty)' => [
                 'payload' => [
@@ -200,9 +204,11 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                     CreateRequest::KEY_LABEL => 'non-empty value',
                     CreateRequest::KEY_TESTS => [],
                 ],
-                'expectedSourceId' => $validSourceId,
-                'expectedLabel' => 'non-empty value',
-                'expectedTests' => null,
+                'expectedResponseData' => [
+                    'id' => '#as-generated',
+                    'source_id' => $validSourceId,
+                    'label' => 'non-empty value',
+                ],
             ],
             'has tests' => [
                 'payload' => [
@@ -213,11 +219,14 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
                         'Test/test2.yml',
                     ],
                 ],
-                'expectedSourceId' => $validSourceId,
-                'expectedLabel' => 'non-empty value',
-                'expectedTests' => [
-                    'Test/test1.yaml',
-                    'Test/test2.yml',
+                'expectedResponseData' => [
+                    'id' => '#as-generated',
+                    'source_id' => $validSourceId,
+                    'label' => 'non-empty value',
+                    'tests' => [
+                        'Test/test1.yaml',
+                        'Test/test2.yml',
+                    ],
                 ],
             ],
         ];
