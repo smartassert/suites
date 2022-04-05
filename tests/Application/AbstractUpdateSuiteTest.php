@@ -13,21 +13,15 @@ use webignition\ObjectReflector\ObjectReflector;
 
 abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
 {
-//    private Suite $suite;
     private SuiteRepository $repository;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-//        $suite = new Suite(EntityId::create(), EntityId::create(), 'label');
-
         $repository = self::getContainer()->get(SuiteRepository::class);
         \assert($repository instanceof SuiteRepository);
         $this->repository = $repository;
-//        $this->repository->add($this->suite);
-//
-//        self::assertSame($this->suite, $this->repository->find(ObjectReflector::getProperty($this->suite, 'id')));
     }
 
     /**
@@ -201,15 +195,10 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
         self::assertSame('application/json', $updateResponse->getHeaderLine('content-type'));
 
         $updateResponseData = json_decode($updateResponse->getBody()->getContents(), true);
-//        var_dump($expectedResponseData, $updateResponseData);
-//        exit();
-
         self::assertSame(1, $this->repository->count([]));
 
         $suite = $this->repository->findAll()[0];
         self::assertInstanceOf(Suite::class, $suite);
-//        var_dump($suite);
-//        exit();
 
         $expectedResponseData['id'] = ObjectReflector::getProperty($suite, 'id');
         self::assertSame($expectedResponseData, $updateResponseData);
@@ -217,29 +206,6 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
         self::assertSame($expectedResponseData['source_id'], ObjectReflector::getProperty($suite, 'sourceId'));
         self::assertSame($expectedResponseData['label'], ObjectReflector::getProperty($suite, 'label'));
         self::assertSame(($expectedResponseData['tests'] ?? null), ObjectReflector::getProperty($suite, 'tests'));
-
-//        $suiteRepository = self::getContainer()->get(SuiteRepository::class);
-//        \assert($suiteRepository instanceof SuiteRepository);
-//
-//        self::assertSame(0, $suiteRepository->count([]));
-//
-//        $response = $this->applicationClient->makeUpdateRequest(
-//            ObjectReflector::getProperty($this->suite, 'id'),
-//            $payload
-//        );
-//
-//        self::assertSame(200, $response->getStatusCode());
-//        self::assertSame(1, $suiteRepository->count([]));
-//
-//        $suite = $suiteRepository->findAll()[0];
-//        self::assertInstanceOf(Suite::class, $suite);
-//
-//        $expectedResponseData['id'] = ObjectReflector::getProperty($suite, 'id');
-//        self::assertSame($expectedResponseData, $responseData);
-//
-//        self::assertSame($expectedResponseData['source_id'], ObjectReflector::getProperty($suite, 'sourceId'));
-//        self::assertSame($expectedResponseData['label'], ObjectReflector::getProperty($suite, 'label'));
-//        self::assertSame($expectedResponseData['tests'] ?? null, ObjectReflector::getProperty($suite, 'tests'));
     }
 
     /**
