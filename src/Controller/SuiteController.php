@@ -10,7 +10,7 @@ use App\Response\ErrorResponse;
 use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
@@ -21,7 +21,7 @@ class SuiteController extends AbstractController
         CreateRequest $request,
         YamlFilenameValidator $yamlFilenameValidator,
         SuiteRepository $repository
-    ): Response {
+    ): JsonResponse {
         // @todo: replace with injected user's id in #10
         $userId = EntityId::create();
 
@@ -72,6 +72,6 @@ class SuiteController extends AbstractController
 
         $repository->add($suite);
 
-        return new Response();
+        return new JsonResponse($suite);
     }
 }
