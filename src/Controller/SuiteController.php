@@ -17,7 +17,7 @@ use Symfony\Component\Uid\Ulid;
 class SuiteController extends AbstractController
 {
     #[Route('/', name: 'create', methods: ['POST'])]
-    public function index(
+    public function create(
         SuiteRequest $request,
         YamlFilenameValidator $yamlFilenameValidator,
         SuiteRepository $repository
@@ -69,6 +69,69 @@ class SuiteController extends AbstractController
         }
 
         $suite = new Suite($userId, $sourceId, $label, $tests);
+
+        $repository->add($suite);
+
+        return new Response();
+    }
+
+    #[Route(SuiteRoutes::ROUTE_SUITE, name: 'update', methods: ['PUT'])]
+    public function update(
+        ?Suite $suite,
+        SuiteRequest $request,
+        YamlFilenameValidator $yamlFilenameValidator,
+        SuiteRepository $repository
+    ): Response {
+        if (null === $suite) {
+            return new Response(null, 404);
+        }
+
+        $sourceId = $request->sourceId;
+        if (null === $sourceId) {
+            return new ErrorResponse('source_id/missing');
+        }
+
+        if (false === Ulid::isValid($sourceId)) {
+            return new ErrorResponse('source_id/invalid');
+        }
+
+        $label = $request->label;
+        if (null === $label) {
+            return new ErrorResponse('label/missing');
+        }
+
+        $requestTests = $request->tests;
+        $tests = null;
+
+        if (is_array($requestTests)) {
+            $tests = [];
+            $invalidTests = [];
+
+            foreach ($requestTests as $requestTest) {
+                $requestTest = trim($requestTest);
+
+                $validation = $yamlFilenameValidator->validate(Filename::parse($requestTest));
+                if ($validation->isValid()) {
+                    $tests[] = $requestTest;
+                } else {
+                    $invalidTests[] = $requestTest;
+                }
+            }
+
+            if ([] !== $invalidTests) {
+                return new ErrorResponse('tests/invalid', [
+                    'invalid_paths' => $invalidTests,
+                ]);
+            }
+
+            if ([] === $tests) {
+                $tests = null;
+            }
+        }
+
+        $suite->setSourceId($sourceId);
+        $suite->setLabel($label);
+        $suite->setTests($tests);
 
         $repository->add($suite);
 
