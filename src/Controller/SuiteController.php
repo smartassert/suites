@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Suite;
 use App\Model\EntityId;
 use App\Repository\SuiteRepository;
-use App\Request\CreateRequest;
+use App\Request\SuiteRequest;
 use App\Response\ErrorResponse;
 use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
@@ -18,7 +18,7 @@ class SuiteController extends AbstractController
 {
     #[Route('/', name: 'create', methods: ['POST'])]
     public function index(
-        CreateRequest $request,
+        SuiteRequest $request,
         YamlFilenameValidator $yamlFilenameValidator,
         SuiteRepository $repository
     ): JsonResponse {

@@ -6,7 +6,7 @@ namespace App\Tests\Application;
 
 use App\Entity\Suite;
 use App\Repository\SuiteRepository;
-use App\Request\CreateRequest;
+use App\Request\SuiteRequest;
 use Symfony\Component\Uid\Ulid;
 use webignition\ObjectReflector\ObjectReflector;
 
@@ -77,8 +77,8 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
         return [
             'source_id missing (not present)' => [
                 'payload' => [
-                    CreateRequest::KEY_LABEL => $validLabel,
-                    CreateRequest::KEY_TESTS => $validTests,
+                    SuiteRequest::KEY_LABEL => $validLabel,
+                    SuiteRequest::KEY_TESTS => $validTests,
                 ],
                 'expectedResponseData' => [
                     'error_state' => 'source_id/missing',
@@ -86,9 +86,9 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'source_id missing (empty)' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => '',
-                    CreateRequest::KEY_LABEL => $validLabel,
-                    CreateRequest::KEY_TESTS => $validTests,
+                    SuiteRequest::KEY_SOURCE_ID => '',
+                    SuiteRequest::KEY_LABEL => $validLabel,
+                    SuiteRequest::KEY_TESTS => $validTests,
                 ],
                 'expectedResponseData' => [
                     'error_state' => 'source_id/missing',
@@ -96,9 +96,9 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'source_id invalid' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => 'not a ULID',
-                    CreateRequest::KEY_LABEL => $validLabel,
-                    CreateRequest::KEY_TESTS => $validTests,
+                    SuiteRequest::KEY_SOURCE_ID => 'not a ULID',
+                    SuiteRequest::KEY_LABEL => $validLabel,
+                    SuiteRequest::KEY_TESTS => $validTests,
                 ],
                 'expectedResponseData' => [
                     'error_state' => 'source_id/invalid',
@@ -106,8 +106,8 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'label missing (not present)' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
-                    CreateRequest::KEY_TESTS => $validTests,
+                    SuiteRequest::KEY_SOURCE_ID => $validSourceId,
+                    SuiteRequest::KEY_TESTS => $validTests,
                 ],
                 'expectedResponseData' => [
                     'error_state' => 'label/missing',
@@ -115,9 +115,9 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'label missing (empty)' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
-                    CreateRequest::KEY_LABEL => '',
-                    CreateRequest::KEY_TESTS => $validTests,
+                    SuiteRequest::KEY_SOURCE_ID => $validSourceId,
+                    SuiteRequest::KEY_LABEL => '',
+                    SuiteRequest::KEY_TESTS => $validTests,
                 ],
                 'expectedResponseData' => [
                     'error_state' => 'label/missing',
@@ -125,9 +125,9 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'test paths invalid' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
-                    CreateRequest::KEY_LABEL => $validLabel,
-                    CreateRequest::KEY_TESTS => [
+                    SuiteRequest::KEY_SOURCE_ID => $validSourceId,
+                    SuiteRequest::KEY_LABEL => $validLabel,
+                    SuiteRequest::KEY_TESTS => [
                         'Valid/path.yaml',
                         'Invalid/path.txt',
                         'Invalid/path.js',
@@ -189,8 +189,8 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
         return [
             'no tests (not present)' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
-                    CreateRequest::KEY_LABEL => 'non-empty value',
+                    SuiteRequest::KEY_SOURCE_ID => $validSourceId,
+                    SuiteRequest::KEY_LABEL => 'non-empty value',
                 ],
                 'expectedResponseData' => [
                     'id' => '#as-generated',
@@ -201,9 +201,9 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'no tests (not empty)' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
-                    CreateRequest::KEY_LABEL => 'non-empty value',
-                    CreateRequest::KEY_TESTS => [],
+                    SuiteRequest::KEY_SOURCE_ID => $validSourceId,
+                    SuiteRequest::KEY_LABEL => 'non-empty value',
+                    SuiteRequest::KEY_TESTS => [],
                 ],
                 'expectedResponseData' => [
                     'id' => '#as-generated',
@@ -214,9 +214,9 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             ],
             'has tests' => [
                 'payload' => [
-                    CreateRequest::KEY_SOURCE_ID => $validSourceId,
-                    CreateRequest::KEY_LABEL => 'non-empty value',
-                    CreateRequest::KEY_TESTS => [
+                    SuiteRequest::KEY_SOURCE_ID => $validSourceId,
+                    SuiteRequest::KEY_LABEL => 'non-empty value',
+                    SuiteRequest::KEY_TESTS => [
                         'Test/test1.yaml',
                         'Test/test2.yml',
                     ],

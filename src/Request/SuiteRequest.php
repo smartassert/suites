@@ -2,7 +2,7 @@
 
 namespace App\Request;
 
-class CreateRequest
+class SuiteRequest
 {
     public const KEY_SOURCE_ID = 'source_id';
     public const KEY_LABEL = 'label';
