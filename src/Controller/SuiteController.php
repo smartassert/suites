@@ -11,7 +11,6 @@ use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
@@ -73,15 +72,11 @@ class SuiteController extends AbstractController
 
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'update', methods: ['PUT'])]
     public function update(
-        ?Suite $suite,
+        Suite $suite,
         SuiteRequest $request,
         YamlFilenameValidator $yamlFilenameValidator,
         SuiteRepository $repository
-    ): Response {
-        if (null === $suite) {
-            return new Response(null, 404);
-        }
-
+    ): JsonResponse {
         $sourceId = $request->sourceId;
         if (null === $sourceId) {
             return new ErrorResponse('source_id/missing');
@@ -126,6 +121,6 @@ class SuiteController extends AbstractController
 
         $repository->add($suite);
 
-        return new Response();
+        return new JsonResponse($suite);
     }
 }

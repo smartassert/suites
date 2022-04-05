@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Exception\SuiteNotFoundException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
@@ -26,8 +27,14 @@ class KernelExceptionEventSubscriber implements EventSubscriberInterface
     public function onKernelException(ExceptionEvent $event): void
     {
         $throwable = $event->getThrowable();
+
         if ($throwable instanceof MethodNotAllowedHttpException) {
             $event->setResponse(new Response(null, 405));
+            $event->stopPropagation();
+        }
+
+        if ($throwable instanceof SuiteNotFoundException) {
+            $event->setResponse(new Response(null, 404));
             $event->stopPropagation();
         }
     }
