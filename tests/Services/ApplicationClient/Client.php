@@ -30,4 +30,19 @@ class Client
             http_build_query($payload)
         );
     }
+
+    /**
+     * @param array<mixed> $payload
+     */
+    public function makeUpdateRequest(string $suiteId, array $payload, string $method = 'PUT'): ResponseInterface
+    {
+        return $this->client->makeRequest(
+            $method,
+            $this->router->generate('update', ['suiteId' => $suiteId]),
+            [
+                'content-type' => 'application/x-www-form-urlencoded',
+            ],
+            http_build_query($payload)
+        );
+    }
 }
