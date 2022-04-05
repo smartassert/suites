@@ -4,23 +4,27 @@ declare(strict_types=1);
 
 namespace App\Tests\Functional\ArgumentResolver;
 
-use App\ArgumentResolver\CreateRequestResolver;
-use App\Request\CreateRequest;
+use App\ArgumentResolver\SuiteRequestResolver;
+use App\Request\SuiteRequest;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\TraceableValueResolver;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
+use webignition\ObjectReflector\ObjectReflector;
 
-class CreateRequestResolverTest extends WebTestCase
+class SuiteRequestResolverTest extends WebTestCase
 {
-    private ArgumentValueResolverInterface $resolver;
+    private SuiteRequestResolver $resolver;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $resolver = self::getContainer()->get(CreateRequestResolver::class);
-        \assert($resolver instanceof ArgumentValueResolverInterface);
+        $resolver = self::getContainer()->get(SuiteRequestResolver::class);
+        \assert($resolver instanceof TraceableValueResolver);
+
+        $resolver = ObjectReflector::getProperty($resolver, 'inner');
+        \assert($resolver instanceof SuiteRequestResolver);
 
         $this->resolver = $resolver;
     }
@@ -44,7 +48,7 @@ class CreateRequestResolverTest extends WebTestCase
                     $argumentMetadata = \Mockery::mock(ArgumentMetadata::class);
                     $argumentMetadata
                         ->shouldReceive('getType')
-                        ->andReturn(CreateRequest::class)
+                        ->andReturn(SuiteRequest::class)
                     ;
 
                     return $argumentMetadata;
@@ -69,22 +73,17 @@ class CreateRequestResolverTest extends WebTestCase
     /**
      * @dataProvider resolveDataProvider
      */
-    public function testResolve(Request $request, CreateRequest $expected): void
+    public function testResolve(Request $request, SuiteRequest $expected): void
     {
         $argumentMetadata = \Mockery::mock(ArgumentMetadata::class);
         $argumentMetadata
             ->shouldReceive('getType')
-            ->andReturn(CreateRequest::class)
+            ->andReturn(SuiteRequest::class)
         ;
 
         $generator = $this->resolver->resolve($request, $argumentMetadata);
+        $items = iterator_to_array($generator);
 
-        $items = [];
-        if ($generator instanceof \Traversable) {
-            $items = iterator_to_array($generator);
-        }
-
-        self::assertIsArray($items);
         self::assertCount(1, $items);
         self::assertEquals($expected, $items[0]);
     }
@@ -97,37 +96,37 @@ class CreateRequestResolverTest extends WebTestCase
         return [
             'empty' => [
                 'request' => new Request(),
-                'expected' => new CreateRequest('', '', null),
+                'expected' => new SuiteRequest('', '', null),
             ],
             'all values present but empty' => [
                 'request' => new Request([], [
-                    CreateRequest::KEY_SOURCE_ID => '',
-                    CreateRequest::KEY_LABEL => '',
-                    CreateRequest::KEY_TESTS => [],
+                    SuiteRequest::KEY_SOURCE_ID => '',
+                    SuiteRequest::KEY_LABEL => '',
+                    SuiteRequest::KEY_TESTS => [],
                 ]),
-                'expected' => new CreateRequest('', '', null),
+                'expected' => new SuiteRequest('', '', null),
             ],
             'source_id and label are ignored if not strings' => [
                 'request' => new Request([], [
-                    CreateRequest::KEY_SOURCE_ID => 100,
-                    CreateRequest::KEY_LABEL => 200,
-                    CreateRequest::KEY_TESTS => [],
+                    SuiteRequest::KEY_SOURCE_ID => 100,
+                    SuiteRequest::KEY_LABEL => 200,
+                    SuiteRequest::KEY_TESTS => [],
                 ]),
-                'expected' => new CreateRequest('', '', null),
+                'expected' => new SuiteRequest('', '', null),
             ],
             'source_id and label are trimmed' => [
                 'request' => new Request([], [
-                    CreateRequest::KEY_SOURCE_ID => '  trimmed  ',
-                    CreateRequest::KEY_LABEL => ' also trimmed      ',
-                    CreateRequest::KEY_TESTS => [],
+                    SuiteRequest::KEY_SOURCE_ID => '  trimmed  ',
+                    SuiteRequest::KEY_LABEL => ' also trimmed      ',
+                    SuiteRequest::KEY_TESTS => [],
                 ]),
-                'expected' => new CreateRequest('trimmed', 'also trimmed', null),
+                'expected' => new SuiteRequest('trimmed', 'also trimmed', null),
             ],
             'tests items are ignored if not strings' => [
                 'request' => new Request([], [
-                    CreateRequest::KEY_SOURCE_ID => 'source_id',
-                    CreateRequest::KEY_LABEL => 'label',
-                    CreateRequest::KEY_TESTS => [
+                    SuiteRequest::KEY_SOURCE_ID => 'source_id',
+                    SuiteRequest::KEY_LABEL => 'label',
+                    SuiteRequest::KEY_TESTS => [
                         100,
                         'Tests/test1.yaml',
                         true,
@@ -136,7 +135,7 @@ class CreateRequestResolverTest extends WebTestCase
                         3.14,
                     ],
                 ]),
-                'expected' => new CreateRequest('source_id', 'label', ['Tests/test1.yaml', 'Tests/test2.yaml']),
+                'expected' => new SuiteRequest('source_id', 'label', ['Tests/test1.yaml', 'Tests/test2.yaml']),
             ],
         ];
     }
