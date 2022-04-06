@@ -40,7 +40,7 @@ class SuiteController extends AbstractController
     }
 
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'delete', methods: ['DELETE'])]
-    public function delete(Suite $suite, SuiteRequest $request): Response
+    public function delete(Suite $suite): Response
     {
         $this->repository->remove($suite);
 
