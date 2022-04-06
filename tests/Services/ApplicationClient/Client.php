@@ -45,4 +45,9 @@ class Client
             http_build_query($payload)
         );
     }
+
+    public function makeDeleteRequest(string $suiteId, string $method = 'DELETE'): ResponseInterface
+    {
+        return $this->client->makeRequest($method, $this->router->generate('delete', ['suiteId' => $suiteId]));
+    }
 }

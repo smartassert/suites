@@ -51,9 +51,6 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
             'POST' => [
                 'method' => 'POST',
             ],
-            'DELETE' => [
-                'method' => 'DELETE',
-            ],
         ];
     }
 
