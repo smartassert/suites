@@ -7,6 +7,7 @@ namespace App\Tests\Application;
 use App\Tests\Services\ApplicationClient\Client;
 use App\Tests\Services\ApplicationClient\ClientFactory;
 use App\Tests\Services\EntityRemover;
+use Psr\Http\Message\ResponseInterface;
 use SmartAssert\SymfonyTestClient\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -34,4 +35,17 @@ abstract class AbstractApplicationTest extends WebTestCase
     }
 
     abstract protected function getClientAdapter(): ClientInterface;
+
+    /**
+     * @param array<mixed> $expectedResponseData
+     */
+    protected function assertBadRequestResponse(ResponseInterface $response, array $expectedResponseData): void
+    {
+        self::assertSame(400, $response->getStatusCode());
+        self::assertSame('application/json', $response->getHeaderLine('content-type'));
+
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
+        self::assertSame($expectedResponseData, $responseData);
+    }
 }

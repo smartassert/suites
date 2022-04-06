@@ -56,12 +56,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
     {
         $response = $this->applicationClient->makeCreateRequest($payload);
 
-        self::assertSame(400, $response->getStatusCode());
-        self::assertSame('application/json', $response->getHeaderLine('content-type'));
-
-        $responseData = json_decode($response->getBody()->getContents(), true);
-
-        self::assertSame($expectedResponseData, $responseData);
+        $this->assertBadRequestResponse($response, $expectedResponseData);
     }
 
     /**
