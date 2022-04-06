@@ -78,7 +78,7 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
      */
     public function testUpdateBadRequest(array $payload, array $expectedResponseData): void
     {
-        $suite = new Suite(EntityId::create(), EntityId::create(), 'label');
+        $suite = new Suite($this->authenticationConfiguration->authenticatedUserId, EntityId::create(), 'label');
         $this->repository->add($suite);
 
         $suiteId = ObjectReflector::getProperty($suite, 'id');

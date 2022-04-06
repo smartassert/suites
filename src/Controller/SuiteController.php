@@ -7,6 +7,7 @@ use App\Model\EntityId;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
 use App\Response\ErrorResponse;
+use App\Security\UserSuiteAccessChecker;
 use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,6 +22,7 @@ class SuiteController extends AbstractController
     public function __construct(
         private YamlFilenameValidator $yamlFilenameValidator,
         private SuiteRepository $repository,
+        private UserSuiteAccessChecker $userSuiteAccessChecker,
     ) {
     }
 
@@ -35,12 +37,16 @@ class SuiteController extends AbstractController
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'update', methods: ['PUT'])]
     public function update(Suite $suite, SuiteRequest $request): JsonResponse
     {
+        $this->userSuiteAccessChecker->denyAccessUnlessGranted($suite);
+
         return $this->setSuite($suite, $request);
     }
 
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'delete', methods: ['DELETE'])]
     public function delete(Suite $suite): Response
     {
+        $this->userSuiteAccessChecker->denyAccessUnlessGranted($suite);
+
         $this->repository->remove($suite);
 
         return new Response(null, 200);

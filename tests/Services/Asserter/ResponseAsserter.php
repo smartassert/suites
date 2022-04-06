@@ -57,4 +57,9 @@ class ResponseAsserter
         $response->getBody()->rewind();
         Assert::assertSame('', $response->getBody()->getContents());
     }
+
+    public function assertForbiddenResponse(ResponseInterface $response): void
+    {
+        Assert::assertSame(403, $response->getStatusCode());
+    }
 }
