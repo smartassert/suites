@@ -6,6 +6,7 @@ namespace App\Tests\Application;
 
 use App\Tests\Services\ApplicationClient\Client;
 use App\Tests\Services\ApplicationClient\ClientFactory;
+use App\Tests\Services\Asserter\ResponseAsserter;
 use App\Tests\Services\EntityRemover;
 use SmartAssert\SymfonyTestClient\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -15,6 +16,7 @@ abstract class AbstractApplicationTest extends WebTestCase
 {
     protected KernelBrowser $kernelBrowser;
     protected Client $applicationClient;
+    protected ResponseAsserter $responseAsserter;
 
     protected function setUp(): void
     {
@@ -31,6 +33,10 @@ abstract class AbstractApplicationTest extends WebTestCase
         if ($entityRemover instanceof EntityRemover) {
             $entityRemover->removeAll();
         }
+
+        $responseAsserter = self::getContainer()->get(ResponseAsserter::class);
+        \assert($responseAsserter instanceof ResponseAsserter);
+        $this->responseAsserter = $responseAsserter;
     }
 
     abstract protected function getClientAdapter(): ClientInterface;
