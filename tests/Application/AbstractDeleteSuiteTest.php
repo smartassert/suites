@@ -26,7 +26,11 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
      */
     public function testDeleteBadMethod(string $method): void
     {
-        $response = $this->applicationClient->makeDeleteRequest(EntityId::create(), $method);
+        $response = $this->applicationClient->makeDeleteRequest(
+            $this->authenticationConfiguration->validToken,
+            EntityId::create(),
+            $method
+        );
 
         self::assertSame(405, $response->getStatusCode());
         self::assertSame('', $response->getBody()->getContents());
@@ -52,7 +56,10 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
 
     public function testDeleteSuiteNotFound(): void
     {
-        $response = $this->applicationClient->makeDeleteRequest(EntityId::create());
+        $response = $this->applicationClient->makeDeleteRequest(
+            $this->authenticationConfiguration->validToken,
+            EntityId::create()
+        );
 
         self::assertSame(200, $response->getStatusCode());
     }
@@ -61,10 +68,13 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
     {
         self::assertSame(0, $this->repository->count([]));
 
-        $createResponse = $this->applicationClient->makeCreateRequest([
-            SuiteRequest::KEY_SOURCE_ID => EntityId::create(),
-            SuiteRequest::KEY_LABEL => 'label',
-        ]);
+        $createResponse = $this->applicationClient->makeCreateRequest(
+            $this->authenticationConfiguration->validToken,
+            [
+                SuiteRequest::KEY_SOURCE_ID => EntityId::create(),
+                SuiteRequest::KEY_LABEL => 'label',
+            ]
+        );
 
         self::assertSame(200, $createResponse->getStatusCode());
         self::assertSame(1, $this->repository->count([]));
@@ -72,7 +82,10 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
         $createResponseData = json_decode($createResponse->getBody()->getContents(), true);
         self::assertIsArray($createResponseData);
 
-        $deleteResponse = $this->applicationClient->makeDeleteRequest($createResponseData['id']);
+        $deleteResponse = $this->applicationClient->makeDeleteRequest(
+            $this->authenticationConfiguration->validToken,
+            $createResponseData['id']
+        );
 
         self::assertSame(200, $deleteResponse->getStatusCode());
         self::assertSame('', $deleteResponse->getBody()->getContents());

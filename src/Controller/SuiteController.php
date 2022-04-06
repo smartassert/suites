@@ -7,12 +7,14 @@ use App\Model\EntityId;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
 use App\Response\ErrorResponse;
+use App\Security\UserSuiteAccessChecker;
 use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 
 class SuiteController extends AbstractController
@@ -20,15 +22,14 @@ class SuiteController extends AbstractController
     public function __construct(
         private YamlFilenameValidator $yamlFilenameValidator,
         private SuiteRepository $repository,
+        private UserSuiteAccessChecker $userSuiteAccessChecker,
     ) {
     }
 
     #[Route('/', name: 'create', methods: ['POST'])]
-    public function create(SuiteRequest $request): JsonResponse
+    public function create(UserInterface $user, SuiteRequest $request): JsonResponse
     {
-        // @todo: replace with injected user's id in #10
-        $userId = EntityId::create();
-        $suite = new Suite($userId, EntityId::create(), '');
+        $suite = new Suite($user->getUserIdentifier(), EntityId::create(), '');
 
         return $this->setSuite($suite, $request);
     }
@@ -36,12 +37,16 @@ class SuiteController extends AbstractController
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'update', methods: ['PUT'])]
     public function update(Suite $suite, SuiteRequest $request): JsonResponse
     {
+        $this->userSuiteAccessChecker->denyAccessUnlessGranted($suite);
+
         return $this->setSuite($suite, $request);
     }
 
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'delete', methods: ['DELETE'])]
     public function delete(Suite $suite): Response
     {
+        $this->userSuiteAccessChecker->denyAccessUnlessGranted($suite);
+
         $this->repository->remove($suite);
 
         return new Response(null, 200);

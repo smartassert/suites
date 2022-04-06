@@ -19,14 +19,20 @@ class Client
     /**
      * @param array<mixed> $payload
      */
-    public function makeCreateRequest(array $payload, string $method = 'POST'): ResponseInterface
-    {
+    public function makeCreateRequest(
+        ?string $authenticationToken,
+        array $payload,
+        string $method = 'POST'
+    ): ResponseInterface {
         return $this->client->makeRequest(
             $method,
             $this->router->generate('create'),
-            [
-                'content-type' => 'application/x-www-form-urlencoded',
-            ],
+            array_merge(
+                $this->createAuthorizationHeader($authenticationToken),
+                [
+                    'content-type' => 'application/x-www-form-urlencoded',
+                ]
+            ),
             http_build_query($payload)
         );
     }
@@ -34,20 +40,49 @@ class Client
     /**
      * @param array<mixed> $payload
      */
-    public function makeUpdateRequest(string $suiteId, array $payload, string $method = 'PUT'): ResponseInterface
-    {
+    public function makeUpdateRequest(
+        ?string $authenticationToken,
+        string $suiteId,
+        array $payload,
+        string $method = 'PUT'
+    ): ResponseInterface {
         return $this->client->makeRequest(
             $method,
             $this->router->generate('update', ['suiteId' => $suiteId]),
-            [
-                'content-type' => 'application/x-www-form-urlencoded',
-            ],
+            array_merge(
+                $this->createAuthorizationHeader($authenticationToken),
+                [
+                    'content-type' => 'application/x-www-form-urlencoded',
+                ]
+            ),
             http_build_query($payload)
         );
     }
 
-    public function makeDeleteRequest(string $suiteId, string $method = 'DELETE'): ResponseInterface
+    public function makeDeleteRequest(
+        ?string $authenticationToken,
+        string $suiteId,
+        string $method = 'DELETE'
+    ): ResponseInterface {
+        return $this->client->makeRequest(
+            $method,
+            $this->router->generate('delete', ['suiteId' => $suiteId]),
+            $this->createAuthorizationHeader($authenticationToken)
+        );
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function createAuthorizationHeader(?string $authenticationToken): array
     {
-        return $this->client->makeRequest($method, $this->router->generate('delete', ['suiteId' => $suiteId]));
+        $headers = [];
+        if (is_string($authenticationToken)) {
+            $headers = [
+                'authorization' => 'Bearer ' . $authenticationToken,
+            ];
+        }
+
+        return $headers;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Application;
 
+use App\Entity\Suite;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
 use Symfony\Component\Uid\Ulid;
@@ -17,7 +18,11 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
      */
     public function testCreateBadMethod(string $method): void
     {
-        $response = $this->applicationClient->makeCreateRequest([], $method);
+        $response = $this->applicationClient->makeCreateRequest(
+            $this->authenticationConfiguration->validToken,
+            [],
+            $method
+        );
 
         self::assertSame(405, $response->getStatusCode());
         self::assertSame('', $response->getBody()->getContents());
@@ -52,7 +57,10 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
      */
     public function testCreateBadRequest(array $payload, array $expectedResponseData): void
     {
-        $response = $this->applicationClient->makeCreateRequest($payload);
+        $response = $this->applicationClient->makeCreateRequest(
+            $this->authenticationConfiguration->validToken,
+            $payload
+        );
 
         $this->responseAsserter->assertBadRequestResponse($response, $expectedResponseData);
     }
@@ -70,7 +78,16 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
 
         self::assertSame(0, $suiteRepository->count([]));
 
-        $response = $this->applicationClient->makeCreateRequest($payload);
+        $response = $this->applicationClient->makeCreateRequest(
+            $this->authenticationConfiguration->validToken,
+            $payload
+        );
+
+        self::assertSame(1, $suiteRepository->count([]));
+
+        $suite = $suiteRepository->findAll()[0];
+        self::assertInstanceOf(Suite::class, $suite);
+        self::assertSame($this->authenticationConfiguration->authenticatedUserId, $suite->getUserId());
 
         $this->responseAsserter->assertSerializedSuiteResponse($response, $expectedResponseData);
     }
