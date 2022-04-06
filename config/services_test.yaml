@@ -34,3 +34,6 @@ services:
 
     SmartAssert\SymfonyTestClient\SymfonyClient:
         public: true
+
+    App\Tests\Services\Asserter\ResponseAsserter:
+        public: true
