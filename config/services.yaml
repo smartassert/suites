@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    users_security_bundle_public_pattern: '^/(status)|(health-check)'
+    users_security_bundle_secured_pattern: '^/'
+    users_security_bundle_access_control_path: '^/'
 
 services:
     # default configuration for services in *this* file
@@ -24,3 +27,9 @@ services:
     # please note that last definitions always *replace* previous ones
 
     SmartAssert\YamlFile\Validator\YamlFilenameValidator: ~
+
+    Psr\Http\Client\ClientInterface:
+        class: GuzzleHttp\Client
+
+    Psr\Http\Message\RequestFactoryInterface:
+        class: GuzzleHttp\Psr7\HttpFactory

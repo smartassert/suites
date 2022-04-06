@@ -30,7 +30,12 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
      */
     public function testUpdateBadMethod(string $method): void
     {
-        $response = $this->applicationClient->makeUpdateRequest(EntityId::create(), [], $method);
+        $response = $this->applicationClient->makeUpdateRequest(
+            $this->authenticationConfiguration->validToken,
+            EntityId::create(),
+            [],
+            $method
+        );
 
         self::assertSame(405, $response->getStatusCode());
         self::assertSame('', $response->getBody()->getContents());
@@ -56,7 +61,11 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
 
     public function testUpdateSuiteNotFound(): void
     {
-        $response = $this->applicationClient->makeUpdateRequest(EntityId::create(), []);
+        $response = $this->applicationClient->makeUpdateRequest(
+            $this->authenticationConfiguration->validToken,
+            EntityId::create(),
+            []
+        );
 
         self::assertSame(404, $response->getStatusCode());
     }
@@ -75,7 +84,11 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
         $suiteId = ObjectReflector::getProperty($suite, 'id');
         $suiteId = is_string($suiteId) ? $suiteId : '';
 
-        $response = $this->applicationClient->makeUpdateRequest($suiteId, $payload);
+        $response = $this->applicationClient->makeUpdateRequest(
+            $this->authenticationConfiguration->validToken,
+            $suiteId,
+            $payload
+        );
 
         $this->responseAsserter->assertBadRequestResponse($response, $expectedResponseData);
     }
@@ -91,14 +104,22 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
     {
         self::assertSame(0, $this->repository->count([]));
 
-        $createResponse = $this->applicationClient->makeCreateRequest($createPayload);
+        $createResponse = $this->applicationClient->makeCreateRequest(
+            $this->authenticationConfiguration->validToken,
+            $createPayload
+        );
+
         self::assertSame(200, $createResponse->getStatusCode());
         self::assertSame(1, $this->repository->count([]));
 
         $createResponseData = json_decode($createResponse->getBody()->getContents(), true);
         self::assertIsArray($createResponseData);
 
-        $updateResponse = $this->applicationClient->makeUpdateRequest($createResponseData['id'], $updatePayload);
+        $updateResponse = $this->applicationClient->makeUpdateRequest(
+            $this->authenticationConfiguration->validToken,
+            $createResponseData['id'],
+            $updatePayload
+        );
 
         $this->responseAsserter->assertSerializedSuiteResponse($updateResponse, $expectedResponseData);
     }
