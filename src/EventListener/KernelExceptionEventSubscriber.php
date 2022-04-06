@@ -34,7 +34,10 @@ class KernelExceptionEventSubscriber implements EventSubscriberInterface
         }
 
         if ($throwable instanceof SuiteNotFoundException) {
-            $event->setResponse(new Response(null, 404));
+            $statusCode = 'DELETE' === $event->getRequest()->getMethod() ? 200 : 404;
+
+            $event->setResponse(new Response(null, $statusCode));
+            $event->allowCustomResponseCode();
             $event->stopPropagation();
         }
     }
