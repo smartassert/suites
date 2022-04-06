@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Application;
 
+use App\Entity\Suite;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
 use Symfony\Component\Uid\Ulid;
@@ -81,6 +82,12 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
             $this->authenticationConfiguration->validToken,
             $payload
         );
+
+        self::assertSame(1, $suiteRepository->count([]));
+
+        $suite = $suiteRepository->findAll()[0];
+        self::assertInstanceOf(Suite::class, $suite);
+        self::assertSame($this->authenticationConfiguration->authenticatedUserId, $suite->getUserId());
 
         $this->responseAsserter->assertSerializedSuiteResponse($response, $expectedResponseData);
     }

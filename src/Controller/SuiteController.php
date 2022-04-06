@@ -13,6 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 
 class SuiteController extends AbstractController
@@ -24,11 +25,9 @@ class SuiteController extends AbstractController
     }
 
     #[Route('/', name: 'create', methods: ['POST'])]
-    public function create(SuiteRequest $request): JsonResponse
+    public function create(UserInterface $user, SuiteRequest $request): JsonResponse
     {
-        // @todo: replace with injected user's id in #10
-        $userId = EntityId::create();
-        $suite = new Suite($userId, EntityId::create(), '');
+        $suite = new Suite($user->getUserIdentifier(), EntityId::create(), '');
 
         return $this->setSuite($suite, $request);
     }
