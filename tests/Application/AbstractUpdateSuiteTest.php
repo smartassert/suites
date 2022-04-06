@@ -80,7 +80,7 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
 
         $response = $this->applicationClient->makeUpdateRequest($suiteId, $payload);
 
-        $this->assertBadRequestResponse($response, $expectedResponseData);
+        $this->responseAsserter->assertBadRequestResponse($response, $expectedResponseData);
     }
 
     /**
@@ -102,21 +102,8 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
         self::assertIsArray($createResponseData);
 
         $updateResponse = $this->applicationClient->makeUpdateRequest($createResponseData['id'], $updatePayload);
-        self::assertSame(200, $updateResponse->getStatusCode());
-        self::assertSame('application/json', $updateResponse->getHeaderLine('content-type'));
 
-        $updateResponseData = json_decode($updateResponse->getBody()->getContents(), true);
-        self::assertSame(1, $this->repository->count([]));
-
-        $suite = $this->repository->findAll()[0];
-        self::assertInstanceOf(Suite::class, $suite);
-
-        $expectedResponseData['id'] = ObjectReflector::getProperty($suite, 'id');
-        self::assertSame($expectedResponseData, $updateResponseData);
-
-        self::assertSame($expectedResponseData['source_id'], ObjectReflector::getProperty($suite, 'sourceId'));
-        self::assertSame($expectedResponseData['label'], ObjectReflector::getProperty($suite, 'label'));
-        self::assertSame(($expectedResponseData['tests'] ?? null), ObjectReflector::getProperty($suite, 'tests'));
+        $this->responseAsserter->assertSerializedSuiteResponse($updateResponse, $expectedResponseData);
     }
 
     /**

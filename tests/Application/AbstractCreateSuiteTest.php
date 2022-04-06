@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Tests\Application;
 
-use App\Entity\Suite;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
 use Symfony\Component\Uid\Ulid;
-use webignition\ObjectReflector\ObjectReflector;
 
 abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
 {
@@ -56,7 +54,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
     {
         $response = $this->applicationClient->makeCreateRequest($payload);
 
-        $this->assertBadRequestResponse($response, $expectedResponseData);
+        $this->responseAsserter->assertBadRequestResponse($response, $expectedResponseData);
     }
 
     /**
@@ -73,22 +71,8 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
         self::assertSame(0, $suiteRepository->count([]));
 
         $response = $this->applicationClient->makeCreateRequest($payload);
-        self::assertSame(200, $response->getStatusCode());
-        self::assertSame('application/json', $response->getHeaderLine('content-type'));
 
-        $responseData = json_decode($response->getBody()->getContents(), true);
-
-        self::assertSame(1, $suiteRepository->count([]));
-
-        $suite = $suiteRepository->findAll()[0];
-        self::assertInstanceOf(Suite::class, $suite);
-
-        $expectedResponseData['id'] = ObjectReflector::getProperty($suite, 'id');
-        self::assertSame($expectedResponseData, $responseData);
-
-        self::assertSame($expectedResponseData['source_id'], ObjectReflector::getProperty($suite, 'sourceId'));
-        self::assertSame($expectedResponseData['label'], ObjectReflector::getProperty($suite, 'label'));
-        self::assertSame($expectedResponseData['tests'] ?? null, ObjectReflector::getProperty($suite, 'tests'));
+        $this->responseAsserter->assertSerializedSuiteResponse($response, $expectedResponseData);
     }
 
     /**
