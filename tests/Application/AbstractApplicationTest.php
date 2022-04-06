@@ -7,6 +7,7 @@ namespace App\Tests\Application;
 use App\Tests\Services\ApplicationClient\Client;
 use App\Tests\Services\ApplicationClient\ClientFactory;
 use App\Tests\Services\Asserter\ResponseAsserter;
+use App\Tests\Services\AuthenticationConfiguration;
 use App\Tests\Services\EntityRemover;
 use SmartAssert\SymfonyTestClient\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -17,6 +18,7 @@ abstract class AbstractApplicationTest extends WebTestCase
     protected KernelBrowser $kernelBrowser;
     protected Client $applicationClient;
     protected ResponseAsserter $responseAsserter;
+    protected AuthenticationConfiguration $authenticationConfiguration;
 
     protected function setUp(): void
     {
@@ -37,6 +39,10 @@ abstract class AbstractApplicationTest extends WebTestCase
         $responseAsserter = self::getContainer()->get(ResponseAsserter::class);
         \assert($responseAsserter instanceof ResponseAsserter);
         $this->responseAsserter = $responseAsserter;
+
+        $authenticationConfiguration = self::getContainer()->get(AuthenticationConfiguration::class);
+        \assert($authenticationConfiguration instanceof AuthenticationConfiguration);
+        $this->authenticationConfiguration = $authenticationConfiguration;
     }
 
     abstract protected function getClientAdapter(): ClientInterface;
