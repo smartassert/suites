@@ -77,6 +77,12 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.7"
     },
+    "guzzlehttp/guzzle": {
+        "version": "7.4.2"
+    },
+    "guzzlehttp/promises": {
+        "version": "1.5.1"
+    },
     "guzzlehttp/psr7": {
         "version": "2.2.1"
     },
@@ -232,6 +238,12 @@
     "smartassert/symfony-test-client": {
         "version": "0.1"
     },
+    "smartassert/users-client": {
+        "version": "0.2"
+    },
+    "smartassert/users-security-bundle": {
+        "version": "0.4"
+    },
     "smartassert/yaml-file": {
         "version": "4.0"
     },
@@ -347,6 +359,9 @@
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
     },
+    "symfony/password-hasher": {
+        "version": "v6.0.3"
+    },
     "symfony/polyfill-intl-grapheme": {
         "version": "v1.25.0"
     },
@@ -361,6 +376,12 @@
     },
     "symfony/polyfill-uuid": {
         "version": "v1.25.0"
+    },
+    "symfony/property-access": {
+        "version": "v6.0.7"
+    },
+    "symfony/property-info": {
+        "version": "v6.0.7"
     },
     "symfony/proxy-manager-bridge": {
         "version": "v6.0.6"
@@ -383,6 +404,27 @@
     },
     "symfony/runtime": {
         "version": "v6.0.5"
+    },
+    "symfony/security-bundle": {
+        "version": "6.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.3",
+            "ref": "98f1f2b0d635908c2b40f3675da2d23b1a069d30"
+        },
+        "files": [
+            "config/packages/security.yaml"
+        ]
+    },
+    "symfony/security-core": {
+        "version": "v6.0.7"
+    },
+    "symfony/security-csrf": {
+        "version": "v6.0.3"
+    },
+    "symfony/security-http": {
+        "version": "v6.0.7"
     },
     "symfony/service-contracts": {
         "version": "v3.0.0"
