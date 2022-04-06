@@ -11,6 +11,7 @@ use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Uid\Ulid;
 
@@ -36,6 +37,14 @@ class SuiteController extends AbstractController
     public function update(Suite $suite, SuiteRequest $request): JsonResponse
     {
         return $this->setSuite($suite, $request);
+    }
+
+    #[Route(SuiteRoutes::ROUTE_SUITE, name: 'delete', methods: ['DELETE'])]
+    public function delete(Suite $suite, SuiteRequest $request): Response
+    {
+        $this->repository->remove($suite);
+
+        return new Response(null, 200);
     }
 
     private function setSuite(Suite $suite, SuiteRequest $request): JsonResponse
