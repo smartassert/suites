@@ -25,6 +25,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Controller\:
+        resource: '../src/Controller/'
+        tags: ['controller.service_arguments']
 
     SmartAssert\YamlFile\Validator\YamlFilenameValidator: ~
 
@@ -33,3 +36,21 @@ services:
 
     Psr\Http\Message\RequestFactoryInterface:
         class: GuzzleHttp\Psr7\HttpFactory
+
+    SmartAssert\DoctrineInspectors\EntityMappingInspector:
+        arguments:
+            $entityClassNames:
+                - 'App\Entity\Suite'
+
+    SmartAssert\InvokableLogger\ExceptionLogger:
+
+    SmartAssert\DoctrineInspectors\QueryInspector:
+
+    SmartAssert\ServiceStatusInspector\ServiceStatusInspectorInterface:
+        class: SmartAssert\ServiceStatusInspector\ServiceStatusInspector
+        arguments:
+            $componentInspectors:
+                database_connection: '@SmartAssert\DoctrineInspectors\QueryInspector'
+                database_entities: '@SmartAssert\DoctrineInspectors\EntityMappingInspector'
+            $exceptionHandlers:
+                - '@SmartAssert\InvokableLogger\ExceptionLogger'

@@ -10,14 +10,13 @@ use App\Response\ErrorResponse;
 use App\Security\UserSuiteAccessChecker;
 use SmartAssert\YamlFile\Filename;
 use SmartAssert\YamlFile\Validator\YamlFilenameValidator;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Ulid;
 
-class SuiteController extends AbstractController
+class SuiteController
 {
     public function __construct(
         private YamlFilenameValidator $yamlFilenameValidator,
