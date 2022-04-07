@@ -95,6 +95,9 @@
     "mockery/mockery": {
         "version": "1.5.0"
     },
+    "monolog/monolog": {
+        "version": "2.4.0"
+    },
     "myclabs/deep-copy": {
         "version": "1.11.0"
     },
@@ -235,6 +238,15 @@
     "sebastian/version": {
         "version": "3.0.2"
     },
+    "smartassert/doctrine-inspectors": {
+        "version": "0.2"
+    },
+    "smartassert/invokable-exception-logger": {
+        "version": "0.3"
+    },
+    "smartassert/service-status-inspector": {
+        "version": "0.2"
+    },
     "smartassert/symfony-test-client": {
         "version": "0.1"
     },
@@ -358,6 +370,21 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/monolog-bridge": {
+        "version": "v6.0.3"
+    },
+    "symfony/monolog-bundle": {
+        "version": "3.7",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.7",
+            "ref": "213676c4ec929f046dfde5ea8e97625b81bc0578"
+        },
+        "files": [
+            "config/packages/monolog.yaml"
+        ]
     },
     "symfony/password-hasher": {
         "version": "v6.0.3"
