@@ -8,4 +8,5 @@ return [
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
     SmartAssert\UsersSecurityBundle\UsersSecurityBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+    SmartAssert\HealthCheckBundle\HealthCheckBundle::class => ['all' => true],
 ];

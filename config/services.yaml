@@ -36,14 +36,3 @@ services:
 
     Psr\Http\Message\RequestFactoryInterface:
         class: GuzzleHttp\Psr7\HttpFactory
-
-    SmartAssert\DoctrineInspectors\EntityMappingInspector: ~
-    SmartAssert\InvokableLogger\ExceptionLogger:
-    SmartAssert\DoctrineInspectors\QueryInspector:
-
-    SmartAssert\ServiceStatusInspector\ServiceStatusInspectorInterface:
-        class: SmartAssert\ServiceStatusInspector\ServiceStatusInspector
-        calls:
-            - addExceptionHandler: ['@SmartAssert\InvokableLogger\ExceptionLogger']
-            - setComponentInspector: ['database_connection', '@SmartAssert\DoctrineInspectors\QueryInspector']
-            - setComponentInspector: ['database_entities', '@SmartAssert\DoctrineInspectors\EntityMappingInspector']
