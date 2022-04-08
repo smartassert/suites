@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7c399928c49f910362a5330c1d40fa60",
+    "content-hash": "a5a2f2b4e9c65e240244f3c3e7a5f58f",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -2392,16 +2392,16 @@
         },
         {
             "name": "smartassert/health-check-bundle",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/smartassert/HealthCheckBundle.git",
-                "reference": "d3e8ec77889c134645628cd801b7eddd5dbada70"
+                "reference": "42b68bab02e206442e10129669d3d96d1a13b4b2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/smartassert/HealthCheckBundle/zipball/d3e8ec77889c134645628cd801b7eddd5dbada70",
-                "reference": "d3e8ec77889c134645628cd801b7eddd5dbada70",
+                "url": "https://api.github.com/repos/smartassert/HealthCheckBundle/zipball/42b68bab02e206442e10129669d3d96d1a13b4b2",
+                "reference": "42b68bab02e206442e10129669d3d96d1a13b4b2",
                 "shasum": ""
             },
             "require": {
@@ -2425,6 +2425,10 @@
                 "phpstan/phpstan-phpunit": "^1.1",
                 "phpunit/phpunit": "^9.5",
                 "squizlabs/php_codesniffer": "^3.6",
+                "symfony/browser-kit": "^6.0",
+                "symfony/framework-bundle": "^6.0",
+                "symfony/monolog-bundle": "^3.7",
+                "symfony/routing": "^6.0",
                 "webignition/object-reflector": "^1.0"
             },
             "type": "symfony-bundle",
@@ -2449,9 +2453,9 @@
             "homepage": "https://github.com/smartassert/HealthCheckBundle",
             "support": {
                 "issues": "https://github.com/smartassert/HealthCheckBundle/issues",
-                "source": "https://github.com/smartassert/HealthCheckBundle/tree/0.1"
+                "source": "https://github.com/smartassert/HealthCheckBundle/tree/0.2"
             },
-            "time": "2022-04-07T17:05:49+00:00"
+            "time": "2022-04-08T13:26:52+00:00"
         },
         {
             "name": "smartassert/invokable-logger",

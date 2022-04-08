@@ -7,6 +7,7 @@ parameters:
     users_security_bundle_public_pattern: '^/(status)|(health-check)'
     users_security_bundle_secured_pattern: '^/'
     users_security_bundle_access_control_path: '^/'
+    route-health-check: '/health-check'
 
 services:
     # default configuration for services in *this* file
