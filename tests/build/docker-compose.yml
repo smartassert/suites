@@ -20,3 +20,33 @@ services:
       - "8080:8080"
     volumes:
       - ./caddy-users-service/Caddyfile:/etc/caddy/Caddyfile
+
+  caddy-app:
+    image: caddy:2.4.5-alpine
+    container_name: caddy-app
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${CADDY_DOMAIN:-localhost}
+      TLS_INTERNAL: ${CADDY_TLS_INTERNAL:-internal}
+    ports:
+      - "443:443"
+    links:
+      - app:app
+    volumes:
+      - ./caddy-app/index.php:/app/public/index.php
+      - ./caddy-app/Caddyfile:/etc/caddy/Caddyfile
+
+  app:
+    env_file: .env
+    build:
+      context: ../..
+      args:
+        DATABASE_URL: postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/suites?serverVersion=12&charset=utf8
+        AUTHENTICATION_BASE_URL: http://users-service
+    container_name: smartassert-sources
+    restart: unless-stopped
+    links:
+      - users-service:users-service
+    depends_on:
+      - postgres
+      - users-service
