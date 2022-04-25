@@ -41,3 +41,6 @@ jobs:
         run: |
           composer integration-status
           sleep 10
+
+      - name: Run tests
+        run: composer test-integration
