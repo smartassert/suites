@@ -8,12 +8,12 @@ on:
         required: true
 
 jobs:
-  deploy:
+  image-builder-service-configure:
+    name: Dispatch service-configure event to image builder
     runs-on: ubuntu-latest
 
     steps:
-      - name: Dispatch service-configure event to image builder
-        uses: peter-evans/repository-dispatch@v1
+      - uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.IMAGE_BUILDER_TOKEN }}
           repository: smartassert/image-builder
@@ -22,4 +22,22 @@ jobs:
             {
               "service_id": "suites",
               "build_configuration": "{\"version\": \"${{ github.event.inputs.version }}\"}"
+            }
+  
+
+  instane-manager-service-configure:
+    name: Dispatch service-configure event to instance manager
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.INSTANCE_MANAGER_TOKEN }}
+          repository: smartassert/instance-manager
+          event-type: service-configure
+          client-payload: |
+            {
+              "service_id": "suites",
+              "state_url": "http://{{ host }}/status",
+              "health_check_url": "http://{{ host }}/health-check"
             }
