@@ -8,7 +8,19 @@ on:
         required: true
 
 jobs:
+  setup:
+    name: Set service id
+    runs-on: ubuntu-latest
+    outputs:
+      service_id: ${{ steps.service_id.outputs.value }}
+
+    steps:
+      - id: service_id
+        run: |
+          echo "::set-output name=value::suites"
+
   image-builder-service-configure:
+    needs: setup
     name: Dispatch service-configure event to image builder
     runs-on: ubuntu-latest
 
@@ -20,12 +32,12 @@ jobs:
           event-type: service-configure
           client-payload: |
             {
-              "service_id": "suites",
+              "service_id": "${{ needs.setup.outputs.service_id }}",
               "build_configuration": "{\"version\": \"${{ github.event.inputs.version }}\"}"
             }
-  
 
   instane-manager-service-configure:
+    needs: setup
     name: Dispatch service-configure event to instance manager
     runs-on: ubuntu-latest
 
@@ -37,7 +49,30 @@ jobs:
           event-type: service-configure
           client-payload: |
             {
-              "service_id": "suites",
+              "service_id": "${{ needs.setup.outputs.service_id }}",
               "state_url": "http://{{ host }}/status",
               "health_check_url": "http://{{ host }}/health-check"
+            }
+
+  instanCe-manager-service-set-env:
+    needs: setup
+    name: Dispatch service-set-env event to instance manager
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - id: service_set_env_env_vars
+        run: |
+          echo "::set-output name=value::$(jq -R . < ./build/instance-manager/env.json | tr -d '\n' | sed 's/""//g')"        
+
+      - uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.INSTANCE_MANAGER_TOKEN }}
+          repository: smartassert/instance-manager
+          event-type: service-set-env
+          client-payload: |
+            {
+              "service_id": "${{ needs.setup.outputs.service_id }}",
+              "env_vars": ${{ steps.service_set_env_env_vars.outputs.value }}
             }
