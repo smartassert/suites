@@ -8,7 +8,14 @@ on:
         required: true
 
 jobs:
+  set-service-id:
+    name: Set service id
+    runs-on: ubuntu-latest
+    outputs:
+      service_id: suites
+
   image-builder-service-configure:
+    needs: set-service-id
     name: Dispatch service-configure event to image builder
     runs-on: ubuntu-latest
 
@@ -20,11 +27,12 @@ jobs:
           event-type: service-configure
           client-payload: |
             {
-              "service_id": "suites",
+              "service_id": "${{ needs.setup.outputs.service_id }}",
               "build_configuration": "{\"version\": \"${{ github.event.inputs.version }}\"}"
             }
 
   instane-manager-service-configure:
+    needs: set-service-id
     name: Dispatch service-configure event to instance manager
     runs-on: ubuntu-latest
 
@@ -36,12 +44,13 @@ jobs:
           event-type: service-configure
           client-payload: |
             {
-              "service_id": "suites",
+              "service_id": "${{ needs.setup.outputs.service_id }}",
               "state_url": "http://{{ host }}/status",
               "health_check_url": "http://{{ host }}/health-check"
             }
 
   instanCe-manager-service-set-env:
+    needs: set-service-id
     name: Dispatch service-set-env event to instance manager
     runs-on: ubuntu-latest
 
@@ -59,6 +68,6 @@ jobs:
           event-type: service-set-env
           client-payload: |
             {
-              "service_id": "suites",
+              "service_id": "${{ needs.setup.outputs.service_id }}",
               "env_vars": ${{ steps.service_set_env_env_vars.outputs.value }}
             }
