@@ -59,6 +59,6 @@ jobs:
           event-type: service-set-env
           client-payload: |
             {
-              "service_id": "sources",
+              "service_id": "suites",
               "env_vars": ${{ steps.service_set_env_env_vars.outputs.value }}
             }
