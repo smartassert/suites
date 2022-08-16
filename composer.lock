@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b8f94127a7bc7c3709c5a271c908a807",
+    "content-hash": "3be3adf17492695dd82023fbdf73ea55",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -6763,16 +6763,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.5.2",
+            "version": "1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "f32e95f571c9587b4e14be05253ae56fedd00b2c"
+                "reference": "c53312ecc575caf07b0e90dee43883fdf90ca67c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f32e95f571c9587b4e14be05253ae56fedd00b2c",
-                "reference": "f32e95f571c9587b4e14be05253ae56fedd00b2c",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c53312ecc575caf07b0e90dee43883fdf90ca67c",
+                "reference": "c53312ecc575caf07b0e90dee43883fdf90ca67c",
                 "shasum": ""
             },
             "require": {
@@ -6798,7 +6798,7 @@
             "description": "PHPStan - PHP Static Analysis Tool",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.5.2"
+                "source": "https://github.com/phpstan/phpstan/tree/1.8.2"
             },
             "funding": [
                 {
@@ -6818,25 +6818,25 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-03-29T07:34:36+00:00"
+            "time": "2022-07-20T09:57:31+00:00"
         },
         {
             "name": "phpstan/phpstan-mockery",
-            "version": "1.0.0",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-mockery.git",
-                "reference": "1767581e025d830d9288702761ad3cc7b72ecca4"
+                "reference": "245b17ccd00f04be3c6b9fc6645f63793b37b2ea"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-mockery/zipball/1767581e025d830d9288702761ad3cc7b72ecca4",
-                "reference": "1767581e025d830d9288702761ad3cc7b72ecca4",
+                "url": "https://api.github.com/repos/phpstan/phpstan-mockery/zipball/245b17ccd00f04be3c6b9fc6645f63793b37b2ea",
+                "reference": "245b17ccd00f04be3c6b9fc6645f63793b37b2ea",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": "^1.0"
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^1.5.0"
             },
             "require-dev": {
                 "mockery/mockery": "^1.2.4",
@@ -6848,9 +6848,6 @@
             },
             "type": "phpstan-extension",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
                 "phpstan": {
                     "includes": [
                         "extension.neon"
@@ -6869,22 +6866,22 @@
             "description": "PHPStan Mockery extension",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-mockery/issues",
-                "source": "https://github.com/phpstan/phpstan-mockery/tree/1.0.0"
+                "source": "https://github.com/phpstan/phpstan-mockery/tree/1.1.0"
             },
-            "time": "2021-09-20T16:03:58+00:00"
+            "time": "2022-05-09T13:12:35+00:00"
         },
         {
             "name": "phpstan/phpstan-phpunit",
-            "version": "1.1.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-phpunit.git",
-                "reference": "09133ce914f1388a8bb8c7f8573aaa3723cff52a"
+                "reference": "4a3c437c09075736285d1cabb5c75bf27ed0bc84"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/09133ce914f1388a8bb8c7f8573aaa3723cff52a",
-                "reference": "09133ce914f1388a8bb8c7f8573aaa3723cff52a",
+                "url": "https://api.github.com/repos/phpstan/phpstan-phpunit/zipball/4a3c437c09075736285d1cabb5c75bf27ed0bc84",
+                "reference": "4a3c437c09075736285d1cabb5c75bf27ed0bc84",
                 "shasum": ""
             },
             "require": {
@@ -6921,28 +6918,28 @@
             "description": "PHPUnit extensions and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-phpunit/issues",
-                "source": "https://github.com/phpstan/phpstan-phpunit/tree/1.1.0"
+                "source": "https://github.com/phpstan/phpstan-phpunit/tree/1.1.1"
             },
-            "time": "2022-03-28T09:20:49+00:00"
+            "time": "2022-04-20T15:24:25+00:00"
         },
         {
             "name": "phpstan/phpstan-symfony",
-            "version": "1.1.8",
+            "version": "1.2.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-symfony.git",
-                "reference": "4bdffcf1033b6c60662a28419d0192e0dda5684f"
+                "reference": "f4cb3b8915d3656e780f305f01c86b70ff933272"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/4bdffcf1033b6c60662a28419d0192e0dda5684f",
-                "reference": "4bdffcf1033b6c60662a28419d0192e0dda5684f",
+                "url": "https://api.github.com/repos/phpstan/phpstan-symfony/zipball/f4cb3b8915d3656e780f305f01c86b70ff933272",
+                "reference": "f4cb3b8915d3656e780f305f01c86b70ff933272",
                 "shasum": ""
             },
             "require": {
                 "ext-simplexml": "*",
-                "php": "^7.1 || ^8.0",
-                "phpstan/phpstan": "^1.4"
+                "php": "^7.2 || ^8.0",
+                "phpstan/phpstan": "^1.8.2"
             },
             "conflict": {
                 "symfony/framework-bundle": "<3.0"
@@ -6966,9 +6963,6 @@
             },
             "type": "phpstan-extension",
             "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                },
                 "phpstan": {
                     "includes": [
                         "extension.neon",
@@ -6995,9 +6989,9 @@
             "description": "Symfony Framework extensions and rules for PHPStan",
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-symfony/issues",
-                "source": "https://github.com/phpstan/phpstan-symfony/tree/1.1.8"
+                "source": "https://github.com/phpstan/phpstan-symfony/tree/1.2.9"
             },
-            "time": "2022-03-24T07:56:03+00:00"
+            "time": "2022-08-05T20:13:38+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
