@@ -25,9 +25,9 @@ class SuiteResolver implements ArgumentValueResolverInterface
     }
 
     /**
-     * @throws SuiteNotFoundException
-     *
      * @return \Traversable<Suite>
+     *
+     * @throws SuiteNotFoundException
      */
     public function resolve(Request $request, ArgumentMetadata $argument): \Traversable
     {
