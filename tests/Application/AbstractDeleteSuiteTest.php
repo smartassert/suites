@@ -27,7 +27,7 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
     public function testDeleteBadMethod(string $method): void
     {
         $response = $this->applicationClient->makeDeleteRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             EntityId::create(),
             $method
         );
@@ -57,7 +57,7 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
     public function testDeleteSuiteNotFound(): void
     {
         $response = $this->applicationClient->makeDeleteRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             EntityId::create()
         );
 
@@ -69,7 +69,7 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
         self::assertSame(0, $this->repository->count([]));
 
         $createResponse = $this->applicationClient->makeCreateRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             [
                 SuiteRequest::KEY_SOURCE_ID => EntityId::create(),
                 SuiteRequest::KEY_LABEL => 'label',
@@ -83,7 +83,7 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
         self::assertIsArray($createResponseData);
 
         $deleteResponse = $this->applicationClient->makeDeleteRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             $createResponseData['id']
         );
 

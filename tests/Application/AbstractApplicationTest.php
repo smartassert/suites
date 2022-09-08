@@ -15,16 +15,25 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 abstract class AbstractApplicationTest extends WebTestCase
 {
-    protected KernelBrowser $kernelBrowser;
+    protected static KernelBrowser $kernelBrowser;
     protected Client $applicationClient;
     protected ResponseAsserter $responseAsserter;
-    protected AuthenticationConfiguration $authenticationConfiguration;
+    protected static AuthenticationConfiguration $authenticationConfiguration;
+
+    public static function setUpBeforeClass(): void
+    {
+        parent::setUpBeforeClass();
+
+        self::$kernelBrowser = self::createClient();
+
+        $authenticationConfiguration = self::getContainer()->get(AuthenticationConfiguration::class);
+        \assert($authenticationConfiguration instanceof AuthenticationConfiguration);
+        self::$authenticationConfiguration = $authenticationConfiguration;
+    }
 
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->kernelBrowser = self::createClient();
 
         $factory = self::getContainer()->get(ClientFactory::class);
         \assert($factory instanceof ClientFactory);
@@ -39,10 +48,6 @@ abstract class AbstractApplicationTest extends WebTestCase
         $responseAsserter = self::getContainer()->get(ResponseAsserter::class);
         \assert($responseAsserter instanceof ResponseAsserter);
         $this->responseAsserter = $responseAsserter;
-
-        $authenticationConfiguration = self::getContainer()->get(AuthenticationConfiguration::class);
-        \assert($authenticationConfiguration instanceof AuthenticationConfiguration);
-        $this->authenticationConfiguration = $authenticationConfiguration;
     }
 
     abstract protected function getClientAdapter(): ClientInterface;
