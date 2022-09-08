@@ -33,7 +33,7 @@ abstract class AbstractInvalidSuiteUserTest extends AbstractApplicationTest
     public function testUpdateSuiteForInvalidUser(): void
     {
         $response = $this->applicationClient->makeUpdateRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             $this->suiteId,
             []
         );
@@ -44,7 +44,7 @@ abstract class AbstractInvalidSuiteUserTest extends AbstractApplicationTest
     public function testDeleteSuiteForInvalidUser(): void
     {
         $response = $this->applicationClient->makeDeleteRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             $this->suiteId
         );
 
