@@ -31,7 +31,7 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
     public function testUpdateBadMethod(string $method): void
     {
         $response = $this->applicationClient->makeUpdateRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             EntityId::create(),
             [],
             $method
@@ -62,7 +62,7 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
     public function testUpdateSuiteNotFound(): void
     {
         $response = $this->applicationClient->makeUpdateRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             EntityId::create(),
             []
         );
@@ -78,14 +78,18 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
      */
     public function testUpdateBadRequest(array $payload, array $expectedResponseData): void
     {
-        $suite = new Suite($this->authenticationConfiguration->authenticatedUserId, EntityId::create(), 'label');
+        $suite = new Suite(
+            $this->authenticationConfiguration->getUser()->id,
+            EntityId::create(),
+            'label'
+        );
         $this->repository->add($suite);
 
         $suiteId = ObjectReflector::getProperty($suite, 'id');
         $suiteId = is_string($suiteId) ? $suiteId : '';
 
         $response = $this->applicationClient->makeUpdateRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             $suiteId,
             $payload
         );
@@ -105,7 +109,7 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
         self::assertSame(0, $this->repository->count([]));
 
         $createResponse = $this->applicationClient->makeCreateRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             $createPayload
         );
 
@@ -116,7 +120,7 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
         self::assertIsArray($createResponseData);
 
         $updateResponse = $this->applicationClient->makeUpdateRequest(
-            $this->authenticationConfiguration->validToken,
+            $this->authenticationConfiguration->getValidApiToken(),
             $createResponseData['id'],
             $updatePayload
         );
