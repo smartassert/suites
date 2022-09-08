@@ -19,7 +19,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
     public function testCreateBadMethod(string $method): void
     {
         $response = $this->applicationClient->makeCreateRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             [],
             $method
         );
@@ -58,7 +58,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
     public function testCreateBadRequest(array $payload, array $expectedResponseData): void
     {
         $response = $this->applicationClient->makeCreateRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             $payload
         );
 
@@ -79,7 +79,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
         self::assertSame(0, $suiteRepository->count([]));
 
         $response = $this->applicationClient->makeCreateRequest(
-            $this->authenticationConfiguration->getValidApiToken(),
+            self::$authenticationConfiguration->getValidApiToken(),
             $payload
         );
 
@@ -87,7 +87,7 @@ abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
 
         $suite = $suiteRepository->findAll()[0];
         self::assertInstanceOf(Suite::class, $suite);
-        self::assertSame($this->authenticationConfiguration->getUser()->id, $suite->getUserId());
+        self::assertSame(self::$authenticationConfiguration->getUser()->id, $suite->getUserId());
 
         $this->responseAsserter->assertSerializedSuiteResponse($response, $expectedResponseData);
     }
