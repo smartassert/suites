@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class UserSuiteAccessChecker
 {
     public function __construct(
-        private AuthorizationCheckerInterface $authorizationChecker,
+        private readonly AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
