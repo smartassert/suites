@@ -42,12 +42,6 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
     public function deleteBadMethodDataProvider(): array
     {
         return [
-            'GET' => [
-                'method' => 'GET',
-            ],
-            'HEAD' => [
-                'method' => 'HEAD',
-            ],
             'POST' => [
                 'method' => 'POST',
             ],

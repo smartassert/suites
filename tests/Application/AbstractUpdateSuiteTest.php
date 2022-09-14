@@ -47,12 +47,6 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
     public function updateBadMethodDataProvider(): array
     {
         return [
-            'GET' => [
-                'method' => 'GET',
-            ],
-            'HEAD' => [
-                'method' => 'HEAD',
-            ],
             'POST' => [
                 'method' => 'POST',
             ],

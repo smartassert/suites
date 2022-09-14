@@ -33,6 +33,14 @@ class SuiteController
         return $this->setSuite($suite, $request);
     }
 
+    #[Route(SuiteRoutes::ROUTE_SUITE, name: 'get', methods: ['GET'])]
+    public function get(Suite $suite): JsonResponse
+    {
+        $this->userSuiteAccessChecker->denyAccessUnlessGranted($suite);
+
+        return new JsonResponse($suite);
+    }
+
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'update', methods: ['PUT'])]
     public function update(Suite $suite, SuiteRequest $request): JsonResponse
     {
