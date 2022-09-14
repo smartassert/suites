@@ -13,10 +13,10 @@ class Suite implements \JsonSerializable
 
     #[ORM\Id]
     #[ORM\Column(type: 'string', length: self::ID_LENGTH, unique: true)]
-    protected string $id;
+    private string $id;
 
     #[ORM\Column(type: 'string', length: self::ID_LENGTH)]
-    private string $userId;
+    private readonly string $userId;
 
     #[ORM\Column(type: 'string', length: self::ID_LENGTH)]
     private string $sourceId;
