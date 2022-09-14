@@ -45,12 +45,7 @@ class Client
         return $this->client->makeRequest(
             $method,
             $this->router->generate('get', ['suiteId' => $suiteId]),
-            array_merge(
-                $this->createAuthorizationHeader($authenticationToken),
-                [
-                    'content-type' => 'application/x-www-form-urlencoded',
-                ]
-            )
+            $this->createAuthorizationHeader($authenticationToken)
         );
     }
 
