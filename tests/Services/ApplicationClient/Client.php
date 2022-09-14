@@ -37,6 +37,23 @@ class Client
         );
     }
 
+    public function makeGetRequest(
+        ?string $authenticationToken,
+        string $suiteId,
+        string $method = 'GET'
+    ): ResponseInterface {
+        return $this->client->makeRequest(
+            $method,
+            $this->router->generate('get', ['suiteId' => $suiteId]),
+            array_merge(
+                $this->createAuthorizationHeader($authenticationToken),
+                [
+                    'content-type' => 'application/x-www-form-urlencoded',
+                ]
+            )
+        );
+    }
+
     /**
      * @param array<mixed> $payload
      */
