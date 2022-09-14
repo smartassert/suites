@@ -19,9 +19,9 @@ use Symfony\Component\Uid\Ulid;
 class SuiteController
 {
     public function __construct(
-        private YamlFilenameValidator $yamlFilenameValidator,
-        private SuiteRepository $repository,
-        private UserSuiteAccessChecker $userSuiteAccessChecker,
+        private readonly YamlFilenameValidator $yamlFilenameValidator,
+        private readonly SuiteRepository $repository,
+        private readonly UserSuiteAccessChecker $userSuiteAccessChecker,
     ) {
     }
 
