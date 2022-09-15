@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace App\Tests\Application;
 
+use App\Entity\Suite;
+use App\Model\EntityId;
+use App\Repository\SuiteRepository;
 use App\Tests\Services\ApplicationClient\Client;
 use App\Tests\Services\ApplicationClient\ClientFactory;
 use App\Tests\Services\Asserter\ResponseAsserter;
 use App\Tests\Services\AuthenticationConfiguration;
 use App\Tests\Services\EntityRemover;
+use Psr\Http\Message\ResponseInterface;
 use SmartAssert\SymfonyTestClient\ClientInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use webignition\ObjectReflector\ObjectReflector;
 
 abstract class AbstractApplicationTest extends WebTestCase
 {
@@ -51,4 +56,32 @@ abstract class AbstractApplicationTest extends WebTestCase
     }
 
     abstract protected function getClientAdapter(): ClientInterface;
+
+    /**
+     * @param callable(string $apiToken, string $suiteId): ResponseInterface $responseCreator
+     */
+    protected function doInvalidUserTest(callable $responseCreator): void
+    {
+        $suite = new Suite(EntityId::create(), EntityId::create(), 'label');
+
+        $repository = self::getContainer()->get(SuiteRepository::class);
+        \assert($repository instanceof SuiteRepository);
+
+        $repository->add($suite);
+
+        $suiteId = ObjectReflector::getProperty($suite, 'id');
+        $suiteId = is_string($suiteId) ? $suiteId : '';
+
+        $response = $responseCreator(self::$authenticationConfiguration->getValidApiToken(), $suiteId);
+
+        self::assertSame(403, $response->getStatusCode());
+    }
+
+    protected function doUnauthorizedUserTest(callable $responseCreator): void
+    {
+        $response = $responseCreator();
+
+        self::assertSame(401, $response->getStatusCode());
+        self::assertSame('', $response->getBody()->getContents());
+    }
 }

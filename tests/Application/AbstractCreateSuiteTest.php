@@ -7,11 +7,23 @@ namespace App\Tests\Application;
 use App\Entity\Suite;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
+use App\Tests\DataProvider\UnauthorizedUserDataProviderTrait;
 use Symfony\Component\Uid\Ulid;
 
 abstract class AbstractCreateSuiteTest extends AbstractApplicationTest
 {
     use CreateUpdateBadRequestDataProviderTrait;
+    use UnauthorizedUserDataProviderTrait;
+
+    /**
+     * @dataProvider unauthorizedUserDataProvider
+     */
+    public function testCreateForUnauthorizedUser(?string $token): void
+    {
+        $this->doUnauthorizedUserTest(function () use ($token) {
+            return $this->applicationClient->makeCreateRequest($token, []);
+        });
+    }
 
     /**
      * @dataProvider createBadMethodDataProvider

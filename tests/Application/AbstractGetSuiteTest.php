@@ -6,10 +6,14 @@ namespace App\Tests\Application;
 
 use App\Model\EntityId;
 use App\Request\SuiteRequest;
+use App\Tests\DataProvider\UnauthorizedUserDataProviderTrait;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\Uid\Ulid;
 
 abstract class AbstractGetSuiteTest extends AbstractApplicationTest
 {
+    use UnauthorizedUserDataProviderTrait;
+
     /**
      * @var array<mixed>
      */
@@ -24,6 +28,23 @@ abstract class AbstractGetSuiteTest extends AbstractApplicationTest
         $suiteId = $this->suiteData['id'] ?? null;
         \assert(is_string($suiteId));
         $this->suiteId = $suiteId;
+    }
+
+    /**
+     * @dataProvider unauthorizedUserDataProvider
+     */
+    public function testGetForUnauthorizedUser(?string $token): void
+    {
+        $this->doUnauthorizedUserTest(function () use ($token) {
+            return $this->applicationClient->makeGetRequest($token, EntityId::create());
+        });
+    }
+
+    public function testGetForInvalidUser(): void
+    {
+        $this->doInvalidUserTest(function (string $apiToken, string $suiteId): ResponseInterface {
+            return $this->applicationClient->makeGetRequest($apiToken, $suiteId);
+        });
     }
 
     /**
