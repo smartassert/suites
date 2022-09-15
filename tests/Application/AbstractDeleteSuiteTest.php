@@ -7,9 +7,12 @@ namespace App\Tests\Application;
 use App\Model\EntityId;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
+use App\Tests\DataProvider\UnauthorisedUserDataProviderTrait;
 
 abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
 {
+    use UnauthorisedUserDataProviderTrait;
+
     private SuiteRepository $repository;
 
     protected function setUp(): void
@@ -19,6 +22,16 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
         $repository = self::getContainer()->get(SuiteRepository::class);
         \assert($repository instanceof SuiteRepository);
         $this->repository = $repository;
+    }
+
+    /**
+     * @dataProvider unauthorizedUserDataProvider
+     */
+    public function testDeleteForUnauthorizedUser(?string $token): void
+    {
+        $response = $this->applicationClient->makeDeleteRequest($token, EntityId::create());
+
+        $this->responseAsserter->assertUnauthorizedResponse($response);
     }
 
     /**

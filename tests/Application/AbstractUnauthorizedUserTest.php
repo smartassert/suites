@@ -20,14 +20,4 @@ abstract class AbstractUnauthorizedUserTest extends AbstractApplicationTest
 
         $this->responseAsserter->assertUnauthorizedResponse($response);
     }
-
-    /**
-     * @dataProvider unauthorizedUserDataProvider
-     */
-    public function testDeleteSuiteForUnauthorizedUser(?string $token): void
-    {
-        $response = $this->applicationClient->makeDeleteRequest($token, EntityId::create());
-
-        $this->responseAsserter->assertUnauthorizedResponse($response);
-    }
 }
