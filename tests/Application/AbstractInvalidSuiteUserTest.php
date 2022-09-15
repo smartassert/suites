@@ -40,14 +40,4 @@ abstract class AbstractInvalidSuiteUserTest extends AbstractApplicationTest
 
         $this->responseAsserter->assertForbiddenResponse($response);
     }
-
-    public function testGetSuiteForInvalidUser(): void
-    {
-        $response = $this->applicationClient->makeGetRequest(
-            self::$authenticationConfiguration->getValidApiToken(),
-            $this->suiteId
-        );
-
-        $this->responseAsserter->assertForbiddenResponse($response);
-    }
 }
