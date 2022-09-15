@@ -50,9 +50,4 @@ class ResponseAsserter
         Assert::assertSame($expectedResponseData['label'], ObjectReflector::getProperty($suite, 'label'));
         Assert::assertSame($expectedResponseData['tests'] ?? null, ObjectReflector::getProperty($suite, 'tests'));
     }
-
-    public function assertForbiddenResponse(ResponseInterface $response): void
-    {
-        Assert::assertSame(403, $response->getStatusCode());
-    }
 }

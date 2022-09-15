@@ -74,7 +74,7 @@ abstract class AbstractApplicationTest extends WebTestCase
 
         $response = $responseCreator(self::$authenticationConfiguration->getValidApiToken(), $suiteId);
 
-        $this->responseAsserter->assertForbiddenResponse($response);
+        self::assertSame(403, $response->getStatusCode());
     }
 
     protected function doUnauthorizedUserTest(callable $responseCreator): void
