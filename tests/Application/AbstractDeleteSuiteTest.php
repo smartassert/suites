@@ -8,6 +8,7 @@ use App\Model\EntityId;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
 use App\Tests\DataProvider\UnauthorisedUserDataProviderTrait;
+use Psr\Http\Message\ResponseInterface;
 
 abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
 {
@@ -32,6 +33,13 @@ abstract class AbstractDeleteSuiteTest extends AbstractApplicationTest
         $response = $this->applicationClient->makeDeleteRequest($token, EntityId::create());
 
         $this->responseAsserter->assertUnauthorizedResponse($response);
+    }
+
+    public function testDeleteForInvalidUser(): void
+    {
+        $this->doInvalidUserTest(function (string $apiToken, string $suiteId): ResponseInterface {
+            return $this->applicationClient->makeDeleteRequest($apiToken, $suiteId);
+        });
     }
 
     /**
