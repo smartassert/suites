@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace App\Tests\Application;
 
 use App\Model\EntityId;
-use App\Tests\Services\AuthenticationConfiguration;
+use App\Tests\DataProvider\UnauthorisedUserDataProviderTrait;
 
 abstract class AbstractUnauthorizedUserTest extends AbstractApplicationTest
 {
+    use UnauthorisedUserDataProviderTrait;
+
     /**
      * @dataProvider unauthorizedUserDataProvider
      */
-    public function testCreateSuiteForUnauthorizedUser(callable $tokenCreator): void
+    public function testCreateSuiteForUnauthorizedUser(?string $token): void
     {
-        $response = $this->applicationClient->makeCreateRequest(
-            $tokenCreator(self::$authenticationConfiguration),
-            []
-        );
+        $response = $this->applicationClient->makeCreateRequest($token, []);
 
         $this->responseAsserter->assertUnauthorizedResponse($response);
     }
@@ -25,13 +24,9 @@ abstract class AbstractUnauthorizedUserTest extends AbstractApplicationTest
     /**
      * @dataProvider unauthorizedUserDataProvider
      */
-    public function testUpdateSuiteForUnauthorizedUser(callable $tokenCreator): void
+    public function testUpdateSuiteForUnauthorizedUser(?string $token): void
     {
-        $response = $this->applicationClient->makeUpdateRequest(
-            $tokenCreator(self::$authenticationConfiguration),
-            EntityId::create(),
-            []
-        );
+        $response = $this->applicationClient->makeUpdateRequest($token, EntityId::create(), []);
 
         $this->responseAsserter->assertUnauthorizedResponse($response);
     }
@@ -39,37 +34,10 @@ abstract class AbstractUnauthorizedUserTest extends AbstractApplicationTest
     /**
      * @dataProvider unauthorizedUserDataProvider
      */
-    public function testDeleteSuiteForUnauthorizedUser(callable $tokenCreator): void
+    public function testDeleteSuiteForUnauthorizedUser(?string $token): void
     {
-        $response = $this->applicationClient->makeDeleteRequest(
-            $tokenCreator(self::$authenticationConfiguration),
-            EntityId::create()
-        );
+        $response = $this->applicationClient->makeDeleteRequest($token, EntityId::create());
 
         $this->responseAsserter->assertUnauthorizedResponse($response);
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function unauthorizedUserDataProvider(): array
-    {
-        return [
-            'no token' => [
-                'tokenCreator' => function () {
-                    return null;
-                },
-            ],
-            'empty token' => [
-                'tokenCreator' => function () {
-                    return '';
-                },
-            ],
-            'non-empty invalid token' => [
-                'tokenCreator' => function (AuthenticationConfiguration $authenticationConfiguration) {
-                    return $authenticationConfiguration->getInvalidApiToken();
-                },
-            ],
-        ];
     }
 }
