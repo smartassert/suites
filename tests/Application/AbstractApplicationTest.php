@@ -76,4 +76,12 @@ abstract class AbstractApplicationTest extends WebTestCase
 
         $this->responseAsserter->assertForbiddenResponse($response);
     }
+
+    protected function doUnauthorizedUserTest(callable $responseCreator): void
+    {
+        $response = $responseCreator();
+
+        self::assertSame(401, $response->getStatusCode());
+        self::assertSame('', $response->getBody()->getContents());
+    }
 }

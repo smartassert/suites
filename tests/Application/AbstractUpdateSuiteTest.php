@@ -8,14 +8,14 @@ use App\Entity\Suite;
 use App\Model\EntityId;
 use App\Repository\SuiteRepository;
 use App\Request\SuiteRequest;
-use App\Tests\DataProvider\UnauthorisedUserDataProviderTrait;
+use App\Tests\DataProvider\UnauthorizedUserDataProviderTrait;
 use Psr\Http\Message\ResponseInterface;
 use webignition\ObjectReflector\ObjectReflector;
 
 abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
 {
     use CreateUpdateBadRequestDataProviderTrait;
-    use UnauthorisedUserDataProviderTrait;
+    use UnauthorizedUserDataProviderTrait;
 
     private SuiteRepository $repository;
 
@@ -33,9 +33,9 @@ abstract class AbstractUpdateSuiteTest extends AbstractApplicationTest
      */
     public function testUpdateForUnauthorizedUser(?string $token): void
     {
-        $response = $this->applicationClient->makeUpdateRequest($token, EntityId::create(), []);
-
-        $this->responseAsserter->assertUnauthorizedResponse($response);
+        $this->doUnauthorizedUserTest(function () use ($token) {
+            return $this->applicationClient->makeUpdateRequest($token, EntityId::create(), []);
+        });
     }
 
     public function testUpdateForInvalidUser(): void
