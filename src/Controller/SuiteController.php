@@ -41,6 +41,14 @@ class SuiteController
         return new JsonResponse($suite);
     }
 
+    #[Route('/list', name: 'list', methods: ['GET'])]
+    public function list(UserInterface $user): JsonResponse
+    {
+        return new JsonResponse($this->repository->findBy([
+            'userId' => $user->getUserIdentifier(),
+        ]));
+    }
+
     #[Route(SuiteRoutes::ROUTE_SUITE, name: 'update', methods: ['PUT'])]
     public function update(Suite $suite, SuiteRequest $request): JsonResponse
     {

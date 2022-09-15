@@ -62,12 +62,7 @@ abstract class AbstractApplicationTest extends WebTestCase
      */
     protected function doInvalidUserTest(callable $responseCreator): void
     {
-        $suite = new Suite(EntityId::create(), EntityId::create(), 'label');
-
-        $repository = self::getContainer()->get(SuiteRepository::class);
-        \assert($repository instanceof SuiteRepository);
-
-        $repository->add($suite);
+        $suite = $this->createSuite(EntityId::create(), EntityId::create(), 'label');
 
         $suiteId = ObjectReflector::getProperty($suite, 'id');
         $suiteId = is_string($suiteId) ? $suiteId : '';
@@ -83,5 +78,17 @@ abstract class AbstractApplicationTest extends WebTestCase
 
         self::assertSame(401, $response->getStatusCode());
         self::assertSame('', $response->getBody()->getContents());
+    }
+
+    protected function createSuite(string $userId, string $sourceId, string $label = 'label'): Suite
+    {
+        $suite = new Suite($userId, $sourceId, $label);
+
+        $repository = self::getContainer()->get(SuiteRepository::class);
+        \assert($repository instanceof SuiteRepository);
+
+        $repository->add($suite);
+
+        return $suite;
     }
 }

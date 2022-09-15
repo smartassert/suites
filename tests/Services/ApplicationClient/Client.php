@@ -49,6 +49,15 @@ class Client
         );
     }
 
+    public function makeListRequest(?string $authenticationToken, string $method = 'GET'): ResponseInterface
+    {
+        return $this->client->makeRequest(
+            $method,
+            $this->router->generate('list'),
+            $this->createAuthorizationHeader($authenticationToken)
+        );
+    }
+
     /**
      * @param array<mixed> $payload
      */
