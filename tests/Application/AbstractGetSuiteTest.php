@@ -24,7 +24,7 @@ abstract class AbstractGetSuiteTest extends AbstractApplicationTest
     {
         parent::setUp();
 
-        $this->suiteData = $this->createSuite();
+        $this->suiteData = $this->makeCreateSuiteRequest();
         $suiteId = $this->suiteData['id'] ?? null;
         \assert(is_string($suiteId));
         $this->suiteId = $suiteId;
@@ -103,7 +103,7 @@ abstract class AbstractGetSuiteTest extends AbstractApplicationTest
     /**
      * @return array<mixed>
      */
-    private function createSuite(): array
+    private function makeCreateSuiteRequest(): array
     {
         $response = $this->applicationClient->makeCreateRequest(
             self::$authenticationConfiguration->getValidApiToken(),
